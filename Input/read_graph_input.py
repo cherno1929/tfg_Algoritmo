@@ -4,7 +4,7 @@ import networkx as nx
 
 def getInput():
 
-    g = nx.Graph(l_max=3000)
+    g = nx.Graph(l_max=2)
 
     n_node, n_edge = map(int, input().strip().split())
     for n in range(n_node):
