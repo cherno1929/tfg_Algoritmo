@@ -9,6 +9,11 @@ def select_next_node(distances, visited):
             minDist = distances[i]
     return bestItem
 
+'''
+"getConectionToNewNode" In order to get the next feasible node, it is needed that the "nextNode" knows with witch
+node is gonna connect, so it search of each visited node and asks if node have edge with it && is the best option?
+'''
+
 def getConectionToNewNode(g,n,v,c):
     connected = False
     minDist = float("inf")
@@ -22,6 +27,11 @@ def getConectionToNewNode(g,n,v,c):
                 c[x] = cost + c[y]
             connected = True
     return connected #So we know if the node conected
+
+'''
+"prim_1" will use Prim expansión and search for every graph that
+can connect with, and will return the set of nodes connected
+'''
 
 def prim_1(g, node):
     n = len(g.nodes)
@@ -51,6 +61,11 @@ def prim_1(g, node):
             break
         n -= 1
     return visited
+
+'''
+"check" will check if any node can connect with any other node and will try-cach
+every posible link failure until it catches a failure of conection
+'''
 
 def check(g):
     isSol = True

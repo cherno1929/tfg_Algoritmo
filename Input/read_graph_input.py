@@ -2,7 +2,7 @@
 import matplotlib.pyplot as plt
 import networkx as nx
 
-def getInput():
+def readGraph():
 
     g = nx.Graph(l_max=2)
 
