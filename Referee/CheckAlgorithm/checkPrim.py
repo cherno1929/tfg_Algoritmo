@@ -35,7 +35,6 @@ can connect with, and will return the set of nodes connected
 
 def prim_1(g, node):
     n = len(g.nodes)
-
     distances = [float("inf")] * n
     costs = [0] * n
 
@@ -60,7 +59,8 @@ def prim_1(g, node):
         else:
             break
         n -= 1
-    return visited
+    distances[node] = 0
+    return visited, distances
 
 '''
 "check" will check if any node can connect with any other node and will try-cach
@@ -73,7 +73,7 @@ def check(g):
     for x,y in g.edges:
         g.get_edge_data(x,y)['isFail'] = True
         for nodeToTest in range(len(g.nodes)):
-            visitedNodes = prim_1(g,nodeToTest)
+            visitedNodes, _ = prim_1(g,nodeToTest)
             isSol = visitedNodes == checkSet
             if not isSol:
                 break

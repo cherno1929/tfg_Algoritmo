@@ -1,14 +1,14 @@
 import networkx as nx
 import random
 
-n = 10 #Number of nodes
-m = 3  #Number of edges
+n = 5 #Number of nodes
+m = 3 #Number of edges per node
 
 def generate_Barabasi_Albert_Graph():
     g = nx.barabasi_albert_graph(n, m)
     g.graph['l_max'] = 8
     for (u, v) in g.edges():
-        g.edges[u, v]['dist'] = random.uniform(1, 10)
+        g.edges[u, v]['dist'] = random.randint(1, 10)
         g.edges[u, v]['isFail'] = False
     for node in g.nodes():
         g.nodes[node]['isFail'] = False

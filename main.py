@@ -1,5 +1,5 @@
 import Input.inputMaster as read
-import Algorithms.random_Graph as algorithm
+import Algorithms.algorithm_Master as algorithms
 import Referee.refereeMaster as referee
 import Output.Out_Data_Graph as write
 
@@ -15,13 +15,15 @@ n = 2   -->     Generate Random graph (Barabasi_Albert)
 "referee" will check if the solution is correct and depending of the number you pass it will...
 n = 1   -->     Check using Prim 
 n = 2   -->     Check using Inner functions of NetworkX
+n = 3   -->     Check using Floyd Warshall
 '''
 
 def run():
     g = read.getInput(2)
-    algorithm.random_Sol(g)
-    print(referee.check(g, 1))
-    print(referee.check(g, 2))
+    print(algorithms.getBestNodes(g))
+    algorithms.solveGraph(g,0)
+    print(referee.check(g,3))
+    #print(getBestNodes(g))
     write.show_Graph(g)
 
 run()
