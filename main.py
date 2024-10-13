@@ -23,7 +23,6 @@ def run():
     print(algorithms.getBestNodes(g))
     algorithms.solveGraph(g,0)
     print(referee.check(g,3))
-    #print(getBestNodes(g))
     write.show_Graph(g)
 
 run()

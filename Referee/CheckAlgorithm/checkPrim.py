@@ -63,21 +63,20 @@ def prim_1(g, node):
     return visited, distances
 
 '''
-"check" will check if any node can connect with any other node and will try-cach
-every posible link failure until it catches a failure of conection
+"check" will get a regenerator node and will get all visited nodes, and this will happen inj every link failure scenario
+until finding a conection failure 
 '''
 
 def check(g):
     isSol = True
-    checkSet = set(g.nodes)
-    for x,y in g.edges:
-        g.get_edge_data(x,y)['isFail'] = True
-        for nodeToTest in range(len(g.nodes)):
-            visitedNodes, _ = prim_1(g,nodeToTest)
-            isSol = visitedNodes == checkSet
-            if not isSol:
-                break
+    nodesInGraph = set(g.nodes)
+    for x, y in g.edges:
+        edgeToFailData = g.get_edge_data(x, y)
+        g.remove_edge(x, y)
+        genNode = next((n for n, attr in g.nodes(data=True) if attr.get('isGen') == True), None)
+        visited, dist = prim_1(g,genNode)
+        isSol = visited == nodesInGraph
+        g.add_edge(x, y, **edgeToFailData)
         if not isSol:
             break
-        g.get_edge_data(x,y)['isFail'] = False
     return isSol

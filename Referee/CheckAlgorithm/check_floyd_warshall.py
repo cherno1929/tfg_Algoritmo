@@ -1,5 +1,9 @@
 #Check using Floyd_WarShall
 
+
+'''
+Gets the matrix of distances of the graph when visiting other nodes
+'''
 def getEdgeMatrix(g):
     n = len(g.nodes)
     matrix = [[] for _ in range(n)]
@@ -26,6 +30,10 @@ def printMatrix(m):
             print("\t", m[i][j], end=" ")
         print()
 
+'''
+Checks every link failure scenario, and stops when one of the elements of the distances matrix is superior of the 
+maximum distance
+'''
 def check(g):
     isValid = True
     n = len(g.nodes)
