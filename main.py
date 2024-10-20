@@ -2,6 +2,7 @@ import Input.inputMaster as read
 import Algorithms.algorithm_Master as algorithms
 import Referee.refereeMaster as referee
 import Output.Out_Data_Graph as write
+import time
 
 '''
 -------------------------------------------
@@ -20,9 +21,12 @@ n = 3   -->     Check using Floyd Warshall
 
 def run():
     g = read.getInput(2)
-    print(algorithms.getBestNodes(g))
-    algorithms.solveGraph(g,0)
-    print(referee.check(g,3))
-    write.show_Graph(g)
+    print(f"Nº Nodos : {len(g.nodes)} // Nº Aristas : {len(g.edges)}")
+    print(f"Distancia maxima {g.graph['l_max']}")
+    ini = time.time()
+    print(f"Solución : {algorithms.solveGraph(g,2)}")
+    fin = time.time()
+    print(f"Tiempo de ejecución en segundos : {fin-ini}")
+    write.show_Graph(g,False)
 
 run()

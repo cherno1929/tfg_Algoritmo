@@ -20,6 +20,7 @@ def getEdgeMatrix(g):
             for j in range(n):
                 if g.nodes[k]['isGen'] and matrix[i][k] <= g.graph['l_max']:
                     matrix[i][k] = 0
+
                 matrix[i][j] = min(matrix[i][j], matrix[i][k] + matrix[k][j])
     return matrix
 
@@ -48,6 +49,7 @@ def check(g):
                     isValid = False
                     break
             if not isValid:
+                printMatrix(distances)
                 break
         g.add_edge(x,y, **edgeToFailData)
         if not isValid:
