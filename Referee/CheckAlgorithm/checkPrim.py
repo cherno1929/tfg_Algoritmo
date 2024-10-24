@@ -73,11 +73,13 @@ def check(g):
     for x, y in g.edges:
         edgeToFailData = g.get_edge_data(x, y)
         g.remove_edge(x, y)
-        genNode = next((n for n, attr in g.nodes(data=True) if attr.get('isGen') == True), None)
-        if genNode == None:
+        #genNode = next((n for n, attr in g.nodes(data=True) if attr.get('isGen') == True), None)
+        '''if genNode == None:
             visited, dist = prim_1(g,0)
         else:
             visited, dist = prim_1(g, genNode)
+        '''
+        visited, dist = prim_1(g, 0)
         isSol = visited == nodesInGraph
         g.add_edge(x, y, **edgeToFailData)
         if not isSol:

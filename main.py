@@ -24,7 +24,7 @@ def run():
     print(f"Nº Nodos : {len(g.nodes)} // Nº Aristas : {len(g.edges)}")
     print(f"Distancia maxima {g.graph['l_max']}")
     ini = time.time()
-    print(f"Solución : {algorithms.solveGraph(g,2)}")
+    print(f"Solución : {algorithms.solveGraph(g,3)}")
     fin = time.time()
     print(f"Tiempo de ejecución en segundos : {fin-ini}")
     write.show_Graph(g,False)

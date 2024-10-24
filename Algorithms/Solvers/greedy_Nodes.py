@@ -8,13 +8,12 @@ def getBestNodes(g):
     for node in range(n):
         g.nodes[node]['isGen'] = True
         visited,distances = prim(g,node)
-        greed.append((len(visited), sum([x for x in distances if x != float("inf")]),g.degree(node),node))
+        greed.append((len(visited), sum([x for x in distances if x != float("inf")]),g.degree(node),node, visited))
         g.nodes[node]['isGen'] = False
 
     vorax_list = sorted(greed, key=lambda x:(x[0],-x[1],x[2]), reverse=True)
 
     for node in range(n):
-        bestNodes.append(vorax_list[node][3])
+        bestNodes.append((vorax_list[node][3],vorax_list[node][4]))
 
     return bestNodes
-
