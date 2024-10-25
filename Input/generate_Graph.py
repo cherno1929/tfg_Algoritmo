@@ -2,7 +2,7 @@ import networkx as nx
 import random
 
 n = 100 #Number of nodes
-m = 15 #Number of edges per node
+m = 10 #Number of edges per node
 
 def generate_Barabasi_Albert_Graph():
     g = nx.barabasi_albert_graph(n, m)

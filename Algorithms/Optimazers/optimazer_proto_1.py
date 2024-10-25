@@ -2,7 +2,7 @@ import Referee.refereeMaster as referee
 import Algorithms.algorithm_Master as master
 
 def optimaze(g,nodes_sol):
-
+    '''
     #Eliminate no needed nodes from solution
     node = 0
     while node < len(nodes_sol):
@@ -13,10 +13,16 @@ def optimaze(g,nodes_sol):
             g.nodes[nodes_sol[node]]['isGen'] = True
             node += 1
 
-    if len(nodes_sol) == 1: #Best Solution
-        return nodes_sol
+
 
     #Try to substitute 2 nodes for 1 (Only nodes in solution)
+
+    '''
+
+    print(f"First solution {nodes_sol}")
+
+    if len(nodes_sol) <= 2:  # Best Solution
+        return nodes_sol
 
     for n1 in nodes_sol:
         for n2 in nodes_sol:
