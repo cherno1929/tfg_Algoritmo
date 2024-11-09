@@ -3,6 +3,7 @@ import Algorithms.algorithm_Master as algorithms
 import Referee.refereeMaster as referee
 import Output.Out_Data_Graph as write
 import time
+import Iterative_Greed.iterative_Greeady as itG_p1
 
 '''
 -------------------------------------------
@@ -24,7 +25,17 @@ def run():
     print(f"Nº Nodos : {len(g.nodes)} // Nº Aristas : {len(g.edges)}")
     print(f"Distancia maxima {g.graph['l_max']}")
     ini = time.time()
-    print(f"Best Solución : {algorithms.solveGraph(g,4)}")
+    sol = algorithms.solveGraph(g,3)
+    print(f"Local Solución : {sol}")
+    if sol != None:
+        bestNodes = algorithms.getBestNodes(g)
+        for n in sol: # Give back the nodes of solution yo the graph
+            g.nodes[n]['isGen'] = True
+        justNodes = [x for (x, _) in bestNodes]
+        sol = itG_p1.iterationalGreedy(g,justNodes,sol)
+        print(f"IG Solution : {sol}")
+    else:
+        print(f"No avalable IG solution")
     fin = time.time()
     print(f"Tiempo de ejecución en segundos : {fin-ini}")
     write.show_Graph(g,False)

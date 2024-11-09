@@ -49,8 +49,8 @@ def prim_1(g, node):
             if getConectionToNewNode(g,next_node,visited,costs):
                 for start, end in g.edges(next_node):
                     dist = g.get_edge_data(start,end)['dist']
-                    error = g.get_edge_data(start, end)['isFail']
-                    if not error and end not in visited and costs[next_node] + dist <= g.graph['l_max']:
+                    #error = g.get_edge_data(start, end)['isFail']
+                    if end not in visited and costs[next_node] + dist <= g.graph['l_max']:
                         distances[end] = min(dist, distances[end])
                 visited.add(next_node)
             else:

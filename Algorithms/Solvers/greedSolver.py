@@ -8,13 +8,16 @@ def solve_v1(g):
     print(f"Best nodes : {[x for (x,y) in bestNodes]}")
 
     if referee.check(g,1):
-        return ()
+        return []
 
+    sol = []
 
     for node in justNodes:
         g.nodes[node]['isGen'] = True
+        sol.append(node)
         if referee.check(g, 1):
-            return solution_Optimizer.optimaze(g, justNodes)
+            print(f"First solution : {sol}")
+            return solution_Optimizer.optimaze(g, sol)
 
     return None
 
