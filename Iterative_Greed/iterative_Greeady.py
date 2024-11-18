@@ -19,16 +19,22 @@ def destructSol(g,sol,betta): # Destroy n random nodes of solution
             deactivated.add(rand_Node)
             g.nodes[rand_Node]['isGen'] = False
 
-def reconstruct(g,bestNodes,lim_loop): # Reconstruct solution based on greedy criterium
+    return list(set(sol) - deactivated)
+
+def reconstruct(g,bestNodes,lim_loop,part_sol): # Reconstruct solution based on greedy criterium
     # Add bestNodes until feasible solution
     bestNodesAux = bestNodes
-    sol_aux = [x for x in g.nodes if g.nodes[x]['isGen']]
-    while not referee.check(g,1) and bestNodesAux and len(sol_aux) < lim_loop:
+    isSol = False
+    # Stop when it's a solution, or the new solution is bigger than the current one
+    while not isSol and bestNodesAux and len(part_sol) < lim_loop:
         node = bestNodesAux.pop(0)
-        sol_aux.append(node)
+        part_sol.append(node)
         g.nodes[node]['isGen'] = True
-    # Optimize solution
-    return optimazer.optimaze(g,sol_aux)
+        isSol = referee.check(g, 1, part_sol[0])
+    # Optimize when solution if is valid
+    if isSol:
+        return optimazer.optimaze(g,part_sol)
+    return part_sol
 
 def restoreSol(g,actualSol,nodesRestore):
     for node in actualSol:
@@ -48,12 +54,13 @@ def iterationalGreedy(g,bestNode,sol):
         # % destruction of solution, no more than 50%
         betta = 50
         while delta < num_Upgrades and len(sol) > 1: # Not more upgrades posible
-            destructSol(g,sol,betta)
-            reconstruct(g,bestNode,len(sol))
-            newSolution = [x for x in g.nodes if g.nodes[x]['isGen']]
+            partical_sol = destructSol(g,sol,betta)
+            newSolution = reconstruct(g,bestNode,len(sol),partical_sol)
+            # Update solution ,if the new solution is better than the old one
             if len(newSolution) < len(sol):
                 sol = newSolution
                 delta = 0
+            # If not restore the old solution
             else:
                 delta += 1
                 restoreSol(g,newSolution,set(sol))

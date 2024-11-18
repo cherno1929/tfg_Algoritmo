@@ -3,6 +3,7 @@
 def select_next_node(distances, visited):
     bestItem = None
     minDist = float("inf")
+    # Itarete until find the best node
     for i in range(len(distances)):
         if i not in visited and distances[i] < minDist:
             bestItem = i
@@ -17,10 +18,13 @@ node is gonna connect, so it search of each visited node and asks if node have e
 def getConectionToNewNode(g,n,v,c):
     connected = False
     minDist = float("inf")
+    # Iterate to find lest distant connection
     for x,y in g.edges(n):
         cost = g.get_edge_data(x,y)['dist']
         error = g.get_edge_data(x,y)['isFail']
+        # It's known that the connection is feassible
         if not error and y in v and cost < minDist and cost + c[y] <= g.graph['l_max']:
+            # If is a generator then the distance resets to 0
             if g.nodes[n]['isGen']:
                 c[n] = 0
             else:
@@ -33,23 +37,27 @@ def getConectionToNewNode(g,n,v,c):
 can connect with, and will return the set of nodes connected
 '''
 
-def prim_1(g, node):
+def prim_1(g, node,len_g = float("inf")):
     n = len(g.nodes)
+    # Its needed a list of distances of every node from regenerator to them
     distances = [float("inf")] * n
     costs = [0] * n
 
+    # The distances are still not known
     for start, end in g.edges(node):
         distances[end] = g.get_edge_data(start,end)['dist']
 
     visited = {node}
 
-    while(n > 0):
+    while n > 0 and len(visited) < len_g:
+        # Select the next best node
         next_node = select_next_node(distances, visited)
         if next_node != None :
+            # Establish connection between new_node -- graph
             if getConectionToNewNode(g,next_node,visited,costs):
+                # Update distances
                 for start, end in g.edges(next_node):
                     dist = g.get_edge_data(start,end)['dist']
-                    #error = g.get_edge_data(start, end)['isFail']
                     if end not in visited and costs[next_node] + dist <= g.graph['l_max']:
                         distances[end] = min(dist, distances[end])
                 visited.add(next_node)
@@ -67,20 +75,19 @@ def prim_1(g, node):
 until finding a conection failure 
 '''
 
-def check(g):
+def check(g, node):
     isSol = True
     nodesInGraph = set(g.nodes)
+    len_nodes_in_graph = len(nodesInGraph)
+    # Check every possible link fail scenario
     for x, y in g.edges:
+        # Break link
         edgeToFailData = g.get_edge_data(x, y)
         g.remove_edge(x, y)
-        #genNode = next((n for n, attr in g.nodes(data=True) if attr.get('isGen') == True), None)
-        '''if genNode == None:
-            visited, dist = prim_1(g,0)
-        else:
-            visited, dist = prim_1(g, genNode)
-        '''
-        visited, dist = prim_1(g, 0)
+        # Check if works
+        visited, dist = prim_1(g, node,len_nodes_in_graph)
         isSol = visited == nodesInGraph
+        # Rebuild link
         g.add_edge(x, y, **edgeToFailData)
         if not isSol:
             break

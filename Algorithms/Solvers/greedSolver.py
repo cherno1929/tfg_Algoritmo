@@ -15,7 +15,7 @@ def solve_v1(g):
     for node in justNodes:
         g.nodes[node]['isGen'] = True
         sol.append(node)
-        if referee.check(g, 1):
+        if referee.check(g, 1, sol[0]):
             print(f"First solution : {sol}")
             return solution_Optimizer.optimaze(g, sol)
 
@@ -28,7 +28,7 @@ def solve_v2(g):
     if referee.check(g, 1):
         return ()
 
-    nodeSol = []
+    sol = []
 
     totalVisited = set()
 
@@ -37,16 +37,16 @@ def solve_v2(g):
     while bestNodes and not isSol:
         node, setVisited = bestNodes.pop(0)
         g.nodes[node]['isGen'] = True
-        nodeSol.append(node)
+        sol.append(node)
         totalVisited.update(setVisited)
-        isSol = referee.check(g,1)
+        isSol = referee.check(g,1,sol[0])
         if isSol:
-             return solution_Optimizer.optimaze(g, nodeSol)
+             return solution_Optimizer.optimaze(g, sol)
 
         # Regroup the nodes
         bestNodes = master.getDiffNodes(bestNodes, totalVisited)
 
     if isSol:
-        return solution_Optimizer.optimaze(g, nodeSol)
+        return solution_Optimizer.optimaze(g, sol)
     else:
         return None
