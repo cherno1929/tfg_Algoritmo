@@ -10,33 +10,37 @@ def optimaze(g,nodes_sol):
     if len(nodes_sol) == 1:  # Best Solution
         return nodes_sol
 
-    nodes_set = set(nodes_sol)
+    set_nodes_solution = set(nodes_sol)
 
     # Optimize based in substitution 2x1
-    for n1 in nodes_sol:
-        for n2 in reversed(nodes_sol):
-            if n1 != n2 and g.nodes[n1]['isGen'] and g.nodes[n2]['isGen']: #If generator off, then there was an previous case of optimization
-                g.nodes[n1]['isGen'] = False
-                g.nodes[n2]['isGen'] = False
-                nodes_set.remove(n1)
-                nodes_set.remove(n2)
-                if not referee.check(g,1,next(iter(nodes_set))): # Check if n1 & n2 aren't needed
-                    nodes_set.add(n1)
-                    g.nodes[n1]['isGen'] = True
-                    if not referee.check(g,1,next(iter(nodes_set))): # Check if only n1 is needed
-                        nodes_set.add(n2)
-                        nodes_set.remove(n1)
-                        g.nodes[n1]['isGen'] = False
-                        g.nodes[n2]['isGen'] = True
-                        if not referee.check(g, 1, next(iter(nodes_set))): # Check if only n2 is needed
-                            nodes_set.add(n1)
-                            g.nodes[n1]['isGen'] = True
-            # Problem!!! -> Sometimes this doble loop cancels all generator nodes
-            # This if it's just a temporal solution
-            if len(nodes_set) == 0:
-                restore_Graph(g,nodes_sol)
-                return nodes_sol
+    i = 0
+    while i < len(nodes_sol) and set_nodes_solution:
+        j = 0
+        while j < len(nodes_sol) and set_nodes_solution:
+            if i != j and nodes_sol[i] in set_nodes_solution and nodes_sol[j] in set_nodes_solution:
+                g.nodes[nodes_sol[i]]['isGen'] = False
+                g.nodes[nodes_sol[j]]['isGen'] = False
+                set_nodes_solution.remove(nodes_sol[i])
+                set_nodes_solution.remove(nodes_sol[j])
+                if not referee.check(g,1):
+                    g.nodes[nodes_sol[i]]['isGen'] = True
+                    set_nodes_solution.add(nodes_sol[i])
+                    if not referee.check(g,1):
+                        g.nodes[nodes_sol[i]]['isGen'] = False
+                        g.nodes[nodes_sol[j]]['isGen'] = True
+                        set_nodes_solution.remove(nodes_sol[i])
+                        set_nodes_solution.add(nodes_sol[j])
+                        if not referee.check(g,1):
+                            g.nodes[nodes_sol[i]]['isGen'] = True
+                            set_nodes_solution.add(nodes_sol[i])
+            j += 1
+        i += 1
+    # Problem!!! -> Sometimes this doble loop cancels all generator nodes
+    # This if it's just a temporal solution
+    if len(set_nodes_solution) == 0:
+        restore_Graph(g,nodes_sol)
+        return nodes_sol
 
-    return list(nodes_set)
+    return list(set_nodes_solution)
 
 
