@@ -1,9 +1,5 @@
-import Input.inputMaster as read
-import Algorithms.algorithm_Master as algorithms
-import Referee.refereeMaster as referee
-import Output.Out_Data_Graph as write
-import time
-import Iterative_Greed.iterative_Greeady as itG_p1
+from Generators.Graph_Generator import Graph_Generator
+from Algorithms.Solver_Master import Solve_Master
 
 '''
 -------------------------------------------
@@ -20,6 +16,21 @@ n = 2   -->     Check using Inner functions of NetworkX
 n = 3   -->     Check using Floyd Warshall
 '''
 
+class Main:
+
+    def __init__(self):
+        self.graph_generator = Graph_Generator()
+        self.solver_master = Solve_Master()
+
+    def run(self):
+        solution = self.graph_generator.generate_graph(20,0.35,8,2,7)
+        solution = self.solver_master.solve_greedy(solution)
+        print("Nice")
+
+main = Main()
+main.run()
+
+'''
 def run():
     g = read.getInput(2)
     print(f"Nº Nodos : {len(g.nodes)} // Nº Aristas : {len(g.edges)}")
@@ -39,5 +50,4 @@ def run():
     fin = time.time()
     print(f"Tiempo de ejecución en segundos : {fin-ini}")
     write.show_Graph(g,False)
-
-run()
+'''
