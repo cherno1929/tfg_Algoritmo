@@ -1,6 +1,7 @@
+from Algorithms.Optimazers.Optimizer import Optimizer
 from Algorithms.Checkers.Prim import Prim
 
-class Local_Optimizer:
+class Local_Optimizer(Optimizer):
 
     def __init__(self, checker = None):
         if checker == None:

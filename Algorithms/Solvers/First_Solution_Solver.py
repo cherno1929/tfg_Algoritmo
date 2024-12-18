@@ -1,6 +1,7 @@
+from Algorithms.Solvers.Solver import Solver
 from Algorithms.Checkers.Prim import Prim
 
-class First_Solution_Solver:
+class First_Solution_Solver(Solver):
 
     def __init__(self, checker = None):
         if checker == None:

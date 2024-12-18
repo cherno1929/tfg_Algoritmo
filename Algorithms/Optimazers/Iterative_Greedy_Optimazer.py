@@ -1,9 +1,10 @@
+from Algorithms.Optimazers.Optimizer import Optimizer
 from Algorithms.Checkers.Prim import Prim
 from Algorithms.Optimazers.Local_Optimizer import Local_Optimizer
 import math
 import random
 
-class Iterative_Greedy_Optimazer:
+class Iterative_Greedy_Optimazer(Optimizer):
 
     def __init__(self, checker = None):
         if checker == None:
@@ -80,3 +81,4 @@ class Iterative_Greedy_Optimazer:
 
     def optimize(self, solution):
         return self.__iterational_greedy__(solution)
+

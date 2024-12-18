@@ -25,29 +25,7 @@ class Main:
     def run(self):
         solution = self.graph_generator.generate_graph(20,0.35,8,2,7)
         solution = self.solver_master.solve_greedy(solution)
-        print("Nice")
 
 main = Main()
 main.run()
 
-'''
-def run():
-    g = read.getInput(2)
-    print(f"Nº Nodos : {len(g.nodes)} // Nº Aristas : {len(g.edges)}")
-    print(f"Distancia maxima {g.graph['l_max']}")
-    ini = time.time()
-    sol = algorithms.solveGraph(g,3)
-    print(f"Local Solución : {sol}")
-    if sol != None:
-        bestNodes = algorithms.getBestNodes(g)
-        for n in sol: # Give back the nodes of solution yo the graph
-            g.nodes[n]['isGen'] = True
-        justNodes = [x for (x, _) in bestNodes]
-        sol = itG_p1.iterationalGreedy(g,justNodes,sol)
-        print(f"IG Solution : {sol}")
-    else:
-        print(f"No avalable IG solution")
-    fin = time.time()
-    print(f"Tiempo de ejecución en segundos : {fin-ini}")
-    write.show_Graph(g,False)
-'''

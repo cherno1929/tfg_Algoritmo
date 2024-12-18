@@ -1,6 +1,6 @@
+from Algorithms.Checkers.Checker import Checker
 
-
-class Prim:
+class Prim(Checker):
 
     def __select_next_node__(self, distances, visited):
         bestItem = None
