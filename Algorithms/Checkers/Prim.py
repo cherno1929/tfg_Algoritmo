@@ -62,7 +62,13 @@ class Prim(Checker):
         distances[node] = 0
         return visited, distances
 
-    def check(self, g, node):
+    def check(self, g, node = None):
+        if node == None:
+            nodes = [x for x in g.nodes if g.nodes[x]['isGen']]
+            if len(nodes) > 0:
+                node = nodes[0]
+            else:
+                node = 0
         isSol = True
         nodesInGraph = set(g.nodes)
         len_nodes_in_graph = len(nodesInGraph)

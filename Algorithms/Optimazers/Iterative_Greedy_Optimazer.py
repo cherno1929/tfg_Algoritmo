@@ -1,5 +1,5 @@
-from Algorithms.Optimazers.Optimizer import Optimizer
 from Algorithms.Checkers.Prim import Prim
+from Algorithms.Optimazers.Optimizer import Optimizer
 from Algorithms.Optimazers.Local_Optimizer import Local_Optimizer
 import math
 import random
@@ -7,16 +7,22 @@ import random
 class Iterative_Greedy_Optimazer(Optimizer):
 
     def __init__(self, checker = None):
-        if checker == None:
-            self.checker = Prim()
+        if checker != None:
+            super.__init__(checker)
         else:
-            self.checker = checker
-        self.local_optimizer = Local_Optimizer()
+            super().__init__(Prim())
+        self.local_optimizer = Local_Optimizer(self.checker)
+        # % destruction of solution, no more than 50%
+        self.betta = 35
+        # Counter of upgrades
+        self.delta = 0
+        # Value got to be low (5-10 according to teacher)
+        self.lim_upgrade = 5
 
     # This algorithm is based on destroying part of the solution and adding
-    def __destruct_sol__(self, g, sol, betta):  # Destroy n random nodes of solution
+    def __destruct_sol__(self, g, sol):  # Destroy n random nodes of solution
         # Numbers of nodes to deactivate
-        num_Nodes_To_Destroy = math.ceil((betta / 100) * len(sol))
+        num_Nodes_To_Destroy = math.ceil((self.betta / 100) * len(sol))
 
         # Set of used nodes to avoid duplication
         deactivated = set()
@@ -31,9 +37,9 @@ class Iterative_Greedy_Optimazer(Optimizer):
 
         return list(set(sol) - deactivated)
 
-    def __reconstruct_solution__(self, solution, lim_loop, part_sol):  # Reconstruct solution based on greedy criterium
+    def __reconstruct_solution__(self, solution, part_sol):  # Reconstruct solution based on greedy criterium
         # Add bestNodes until feasible solution
-        bestNodesAux = solution.best_nodes
+        bestNodesAux = solution.best_nodes[:]
         isSol = False
         # Stop when it's a solution, or the new solution is bigger than the current one
         while not isSol and bestNodesAux:
@@ -43,10 +49,8 @@ class Iterative_Greedy_Optimazer(Optimizer):
             isSol = self.checker.check(solution.graph, part_sol[0])
         # Optimize when solution if is valid
         if isSol:
-            new_sol = self.local_optimizer.optimize(solution, part_sol)
-            if len(new_sol) < lim_loop:
-                return new_sol
-        return part_sol
+            return self.local_optimizer.optimize(solution, part_sol)
+        return solution.first_local_solution
 
     def __restore_sol__(self, g, actualSol, nodesRestore):
         for node in actualSol:
@@ -60,22 +64,16 @@ class Iterative_Greedy_Optimazer(Optimizer):
     def __iterational_greedy__(self, solution):
         sol = solution.first_local_solution
         if len(sol) > 1:  # No upgrade needed
-            # Value got to be low (5-10 according to teacher)
-            num_Upgrades = 5
-            # Counter of upgrades
-            delta = 0
-            # % destruction of solution, no more than 50%
-            betta = 50
-            while delta < num_Upgrades and len(sol) > 1:  # Not more upgrades posible
-                partical_sol = self.__destruct_sol__(solution.graph, sol, betta)
-                newSolution = self.__reconstruct_solution__(solution, len(sol), partical_sol)
+            while self.delta < self.lim_upgrade and len(sol) > 1:  # Not more upgrades posible
+                partical_sol = self.__destruct_sol__(solution.graph, sol)
+                newSolution = self.__reconstruct_solution__(solution, partical_sol)
                 # Update solution ,if the new solution is better than the old one
-                if len(newSolution) < len(sol):
+                if len(newSolution) < len(sol) and self.checker.check(solution.graph,newSolution[0]):
                     sol = newSolution
-                    delta = 0
+                    self.delta = 0
                 # If not restore the old solution
                 else:
-                    delta += 1
+                    self.delta += 1
                     self.__restore_sol__(solution.graph, newSolution, set(sol))
         return sol
 

@@ -1,5 +1,8 @@
+import copy
+
 from Generators.Graph_Generator import Graph_Generator
 from Algorithms.Solver_Master import Solve_Master
+import Output.Out_Data_Graph as out
 
 '''
 -------------------------------------------
@@ -23,8 +26,19 @@ class Main:
         self.solver_master = Solve_Master()
 
     def run(self):
-        solution = self.graph_generator.generate_graph(20,0.35,8,2,7)
-        solution = self.solver_master.solve_greedy(solution)
+        solution = self.graph_generator.generate_graph(10,0.35,8,2,7)
+        sol_1 = copy.deepcopy(solution)
+        sol_2 = copy.deepcopy(solution)
+        sol_3 = copy.deepcopy(solution)
+        self.solver_master.solve_optimal(sol_2)
+        print("/////////////////////////")
+        self.solver_master.solve_greedy(sol_1)
+        print("/////////////////////////")
+        self.solver_master.solver_random(sol_3)
+        print("/////////////////////////")
+
+        out.show_Graph(sol_1.graph, False)
+        out.show_Graph(sol_2.graph, False)
 
 main = Main()
 main.run()
