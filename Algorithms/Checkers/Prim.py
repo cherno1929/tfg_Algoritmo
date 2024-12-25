@@ -53,8 +53,6 @@ class Prim(Checker):
 
         visited = {node}
 
-        ###############################
-
         while n > 0 and len(visited) < len_g:
             # Select the next best node
             next_node = self.__select_next_node__(distances, visited)
@@ -65,15 +63,12 @@ class Prim(Checker):
                     visited.add(next_node)
                     # Update distances
                     for start, end in g.edges(next_node):
+                        # Only no visited nodes are needed for distance update
                         if end not in visited:
-                            dist = self.__get_viable_dist_to_network__(g, end, list(visited),costs)  # g.get_edge_data(start, end)['dist']
+                            # Get fist viable distance for next posible nodes
+                            dist = self.__get_viable_dist_to_network__(g, end, list(visited),costs)
                             if dist <= g.graph['l_max']:
                                 distances[end] = min(dist, distances[end])
-                        '''
-                        dist = g.get_edge_data(start, end)['dist']
-                        if end not in visited and costs[next_node] + dist <= g.graph['l_max']:
-                            distances[end] = min(dist, distances[end])
-                        '''
                 else:
                     distances[next_node] = float("inf")
                     n += 1
@@ -81,12 +76,12 @@ class Prim(Checker):
                 break
             n -= 1
 
-        ###############################
-
+        # Starting node will allways have 0 distance
         distances[node] = 0
         return visited, distances
 
     def check(self, g, node = None):
+        # Get a node, get first generator if possible
         if node == None:
             nodes = [x for x in g.nodes if g.nodes[x]['isGen']]
             if len(nodes) > 0:

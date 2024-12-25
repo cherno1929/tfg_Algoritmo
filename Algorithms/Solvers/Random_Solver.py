@@ -3,6 +3,7 @@ import random
 
 class Random_Solver(Solver):
 
+    # Gives a random solution
     def __random_solve__(self, g):
         sol = []
         for n in g.nodes:

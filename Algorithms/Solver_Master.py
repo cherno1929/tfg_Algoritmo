@@ -7,11 +7,12 @@ from Algorithms.Checkers.Prim import Prim
 class Solve_Master:
 
     def __init__(self):
-        self.check = Prim()
-        self.fist_solution_solver = First_Solution_Solver()
-        self.iterative_greedy_optimizer = Iterative_Greedy_Optimazer()
-        self.optimal_solver = Optimal_Solver()
-        self.random_solver = Random_Solver()
+        # Create checker for all attributes to save memory
+        prim = Prim()
+        self.fist_solution_solver = First_Solution_Solver(prim)
+        self.iterative_greedy_optimizer = Iterative_Greedy_Optimazer(prim)
+        self.optimal_solver = Optimal_Solver(prim)
+        self.random_solver = Random_Solver(prim)
 
 
     def solve_greedy(self, g):
@@ -19,19 +20,12 @@ class Solve_Master:
         if g.first_solution != None:
             g.first_local_solution = self.iterative_greedy_optimizer.local_optimizer.optimize(g, g.first_solution)
             g.best_solution = self.iterative_greedy_optimizer.optimize(g)
-
         return g
 
     def solve_optimal(self, g):
-        solution = self.optimal_solver.solve(g)
-        if solution != None:
-            print(solution)
-            print(self.check.check(g.graph, g.best_nodes[0]))
-        else:
-            print("There is no solution")
+        g.best_solution = self.optimal_solver.solve(g)
         return g
 
     def solver_random(self, g):
-        solution = self.random_solver.solve(g)
-        print(solution)
+        g.best_solution = self.random_solver.solve(g)
         return g

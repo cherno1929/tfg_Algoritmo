@@ -7,10 +7,7 @@ import random
 class Iterative_Greedy_Optimazer(Optimizer):
 
     def __init__(self, checker = None):
-        if checker != None:
-            super.__init__(checker)
-        else:
-            super().__init__(Prim())
+        super().__init__(checker)
         self.local_optimizer = Local_Optimizer(self.checker)
         # % destruction of solution, no more than 50%
         self.betta = 35

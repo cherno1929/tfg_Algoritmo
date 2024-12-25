@@ -10,12 +10,14 @@ class First_Solution_Solver(Solver):
 
         sol = []
 
+        # Add best-nodes until it finds a solution
         for node in best_nodes:
             graph.nodes[node]['isGen'] = True
             sol.append(node)
             if self.checker.check(graph, sol[0]):
                 return sol
 
+        # Graph doesnt have a solution
         return None
 
     def solve(self, solution):
