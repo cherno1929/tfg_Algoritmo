@@ -1,4 +1,4 @@
-from Algorithms.Solvers.Solver import Solver
+from Algorithm.Algorithms.Solvers.Solver import Solver
 import itertools
 
 class Optimal_Solver(Solver):

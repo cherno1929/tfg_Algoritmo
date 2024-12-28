@@ -1,6 +1,5 @@
-from Algorithms.Checkers.Prim import Prim
-from Algorithms.Optimazers.Optimizer import Optimizer
-from Algorithms.Optimazers.Local_Optimizer import Local_Optimizer
+from Algorithm.Algorithms.Optimazers.Optimizer import Optimizer
+from Algorithm.Algorithms.Optimazers.Local_Optimizer import Local_Optimizer
 import math
 import random
 

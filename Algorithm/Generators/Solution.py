@@ -1,5 +1,3 @@
-from Algorithms.Checkers.Prim import Prim
-
 class Solution:
 
     def __init__(self, graph, best_nodes):

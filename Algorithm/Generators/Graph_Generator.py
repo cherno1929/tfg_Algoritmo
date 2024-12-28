@@ -1,7 +1,7 @@
 import networkx as nx
 import random
-from Generators.Solution import Solution
-from Algorithms.Checkers.Prim import Prim
+from Algorithm.Generators.Solution import Solution
+from Algorithm.Algorithms.Checkers.Prim import Prim
 
 class Graph_Generator:
 

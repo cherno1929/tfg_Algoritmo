@@ -1,8 +1,8 @@
-from Algorithms.Solvers.First_Solution_Solver import First_Solution_Solver
-from Algorithms.Optimazers.Iterative_Greedy_Optimazer import Iterative_Greedy_Optimazer
-from Algorithms.Solvers.Optimal_Solver import Optimal_Solver
-from Algorithms.Solvers.Random_Solver import Random_Solver
-from Algorithms.Checkers.Prim import Prim
+from Algorithm.Algorithms.Solvers.First_Solution_Solver import First_Solution_Solver
+from Algorithm.Algorithms.Optimazers.Iterative_Greedy_Optimazer import Iterative_Greedy_Optimazer
+from Algorithm.Algorithms.Solvers.Optimal_Solver import Optimal_Solver
+from Algorithm.Algorithms.Solvers.Random_Solver import Random_Solver
+from Algorithm.Algorithms.Checkers.Prim import Prim
 
 class Solve_Master:
 

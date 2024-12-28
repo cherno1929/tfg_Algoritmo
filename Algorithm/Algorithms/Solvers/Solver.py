@@ -1,4 +1,4 @@
-from Algorithms.Checkers.Prim import Prim
+from Algorithm.Algorithms.Checkers.Prim import Prim
 
 class Solver:
 

@@ -1,6 +1,4 @@
-import copy
-
-from Algorithms.Checkers.Checker import Checker
+from Algorithm.Algorithms.Checkers.Checker import Checker
 
 class Prim(Checker):
 

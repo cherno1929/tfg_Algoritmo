@@ -1,5 +1,5 @@
-from Algorithms.Solvers.Solver import Solver
-from Algorithms.Checkers.Prim import Prim
+from Algorithm.Algorithms.Solvers.Solver import Solver
+
 
 class First_Solution_Solver(Solver):
 

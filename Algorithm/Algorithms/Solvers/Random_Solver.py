@@ -1,4 +1,4 @@
-from Algorithms.Solvers.Solver import Solver
+from Algorithm.Algorithms.Solvers.Solver import Solver
 import random
 
 class Random_Solver(Solver):

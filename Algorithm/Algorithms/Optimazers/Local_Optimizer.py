@@ -1,5 +1,5 @@
-from Algorithms.Optimazers.Optimizer import Optimizer
-from Algorithms.Checkers.Prim import Prim
+from Algorithm.Algorithms.Optimazers.Optimizer import Optimizer
+
 
 class Local_Optimizer(Optimizer):
 
