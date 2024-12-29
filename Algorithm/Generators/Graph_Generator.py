@@ -45,7 +45,11 @@ class Graph_Generator:
             graph.edges[u, v]['dist'] = random.randint(min_edge, max_edge)
             # If its working
             graph.edges[u, v]['isFail'] = False
+            # Nodes of edge
+            graph.edges[u, v]['source'] = u
+            graph.edges[u, v]['target'] = v
         for node in graph.nodes():
             # If its a regenerator
             graph.nodes[node]['isGen'] = False
+            graph.nodes[node]['id'] = node
 

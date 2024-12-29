@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles_graph.css') }}">
+</head>
+<body>
+    <button onclick="location.href='/'">Home</button>
+    <br>
+    <p>This is an ftlrp algorithm solver, please give the data of your graph, and this solver will give you the result</p>
+    <form id="form_graph">
+        <p>Number of nodes</p>
+        <input type="number" id="n_node" name="n_node">
+        <p>Probability of link</p>
+        <input type="number" step="0.01" id="link_probability" name="prob_link">
+        <p>Minimum distance of link</p>
+        <input type="number" id="min_link" name="min_dist">
+        <p>Maximum distance if link</p>
+        <input type="number" id="max_link" name="max_dist">
+        <p>Maximum distance allowed to travel</p>
+        <input type="number" id="max_travel" name="max_travel">
+        <br>
+        <button type="submit">Send</button>
+    </form>
+
+    <br>
+
+    <svg width="800" height="800"></svg>
+
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script src="{{ url_for('static', filename='ftlp_menu.js') }}"></script>
+
+</body>
+</html>
