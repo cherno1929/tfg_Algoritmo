@@ -14,6 +14,10 @@ def home():
 def algorithm_menu():
     return flask.render_template("ftlrp_menu.html")
 
+@app.route('/benchmarks')
+def get_benchmark_menu():
+    return flask.render_template("benckmark.html")
+
 #############################
 # API
 #############################
@@ -23,6 +27,13 @@ def solve_ftlrp():
     graph_data = flask.request.get_json()
     solution = algorithm_master.solve_ftlrp_problem(graph_data)
     return flask.jsonify(solution.to_dict())
+
+@app.route('/api/benchmarks/general', methods=['POST'])
+def get_benckmark():
+    graph_data = flask.request.get_json()
+    results = algorithm_master.run_benchmark(graph_data)
+    return flask.jsonify(results.to_dict())
+
 
 if __name__ == '__main__':
     app.run()

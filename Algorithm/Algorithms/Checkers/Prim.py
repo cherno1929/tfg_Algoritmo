@@ -78,6 +78,14 @@ class Prim(Checker):
         distances[node] = 0
         return visited, distances
 
+    def check_all_nodes(self, g):
+        isValid = True
+        i = 0
+        while isValid and i < len(g.nodes):
+            isValid = self.check(g, i)
+            i += 1
+        return isValid
+
     def check(self, g, node = None):
         # Get a node, get first generator if possible
         if node == None:
@@ -85,7 +93,7 @@ class Prim(Checker):
             if len(nodes) > 0:
                 node = nodes[0]
             else:
-                node = 0
+                return self.check_all_nodes(g)
         isSol = True
         nodesInGraph = set(g.nodes)
         len_nodes_in_graph = len(nodesInGraph)
