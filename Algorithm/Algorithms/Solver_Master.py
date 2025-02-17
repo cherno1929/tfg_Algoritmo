@@ -13,6 +13,7 @@ class Solve_Master:
         self.iterative_greedy_optimizer = Iterative_Greedy_Optimazer(prim)
         self.optimal_solver = Optimal_Solver(prim)
         self.random_solver = Random_Solver(prim)
+        self.checker = prim
 
 
     def solve_greedy(self, g):

@@ -56,7 +56,7 @@ function show_graph(graph){
   .force("charge", d3.forceManyBody().strength(-200))
   .force("center", d3.forceCenter(width / 2, height / 2));
 
-  // Show links
+  // Draw links
   const link = svg.append("g")
   .attr("class", "links")
   .selectAll("line")
@@ -83,6 +83,14 @@ function show_graph(graph){
   .attr("y", 4)
   .text(d => d.id);
 
+  const link_label = svg.append("g")
+  .selectAll("text")
+  .data(graph.links)
+  .join("text")
+  .attr("x", 12)
+  .attr("y", 4)
+  .text(d => d.dist);
+
   // Update positions of nodes
   simulation.on("tick", () => {
   link
@@ -98,6 +106,11 @@ function show_graph(graph){
   labels
     .attr("x", d => d.x + 12)
     .attr("y", d => d.y + 4);
+  
+  link_label
+    .attr("x", d => (d.source.x + d.target.x) / 2)
+    .attr("y", d => (d.source.y + d.target.y) / 2);
+  
   });
 
   // Dragable functions

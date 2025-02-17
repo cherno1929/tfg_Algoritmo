@@ -10,22 +10,38 @@
     <p>This is an ftlrp algorithm solver, please give the data of your graph, and this solver will give you the result</p>
     <form id="form_benchmarck">
         <p>Initial number of nodes</p>
-        <input type="number" id="n_ini_node" name="n_ini_node">
+        <input type="number" id="n_ini_node" name="n_ini_node" value="10">
         <p>Final number of nodes</p>
-        <input type="number" id="n_fin_node" name="n_fin_node">
+        <input type="number" id="n_fin_node" name="n_fin_node" value="13">
         <p>Probability of link</p>
-        <input type="number" step="0.01" id="link_probability" name="prob_link">
+        <input type="number" step="0.01" id="link_probability" name="prob_link" value="0.4">
         <p>Number of sample per number of nodes</p>
-        <input type="number" id="n_sample" name="n_sample">
+        <input type="number" id="n_sample" name="n_sample" value="1">
         <p>Minimum distance of link</p>
-        <input type="number" id="min_link" name="min_dist">
+        <input type="number" id="min_link" name="min_dist" value="1">
         <p>Maximum distance if link</p>
-        <input type="number" id="max_link" name="max_dist">
+        <input type="number" id="max_link" name="max_dist" value="3">
         <p>Maximum distance allowed to travel</p>
-        <input type="number" id="max_travel" name="max_travel">
+        <input type="number" id="max_travel" name="max_travel" value="4">
         <br>
         <button type="submit">Send</button>
     </form>
+
+    <!-- Descargar la información en formato csv -->
+    <button onclick="download_graphs()">Descargar Info</button>
+
+    <!-- Grafico de lineas -->
+    <svg id="line_graphic" width="600" height="400"></svg>
+
+    <!-- Graficos nodo-link -->
+    <svg id="nl_graphic" width="600" height="400"></svg>
+
+    <!-- Graficos de error -->
+    <svg id="error_graphic" width="600" height="400"></svg>
+
+    <br>
+
 </body>
-<script src="{{ url_for('static', filename='benchmark_menu.js') }}"></script>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script src="{{ url_for('static', filename='benchmark_menu.js') }}"></script>
 </html>

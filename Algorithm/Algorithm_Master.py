@@ -23,14 +23,8 @@ class Algorithm_Master:
             data['max_dist'] = int(data['max_dist'])
             data['prob_link'] = float(data['prob_link'])
         solution = self.graph_generator.generate_graph(data['n_node'], data['prob_link'], data['max_travel'], data['min_dist'], data['max_dist'])
-        start_time = time.time()
-        self.solver_master.solve_greedy(solution)
-        end_time = time.time()
 
-        # Gets how many time in seconds it needed
-        solution.time_to_solve = end_time - start_time
-
-        return solution
+        return self.run_ftlrp(solution)
 
     def run_benchmark(self, data):
         # Transform data
@@ -44,13 +38,35 @@ class Algorithm_Master:
 
         statistic = Statistic()
 
+
         for n_node in range(data['n_ini_node'], data['n_fin_node'] + 1):
             data['n_node'] = n_node
-            for n_sample in range(data['n_sample']):
+            n_sol = 0
+            while n_sol < data['n_sample']:
                 solution = self.solve_ftlrp_problem(data, True)
                 if n_node in statistic.solutions:
                     statistic.solutions[n_node].append(solution)
                 else:
                     statistic.solutions[n_node] = [solution]
 
+                if solution.best_solution != None:
+                    n_sol += 1
+
         return statistic
+
+    def run_ftlrp(self, solution):
+        start_time = time.time()
+        self.solver_master.solve_greedy(solution)
+        end_time = time.time()
+        solution.time_to_solve = end_time - start_time
+        return solution
+
+    def check_is_sol_client_req(self, graph_data):
+        solution = self.graph_generator.transform_to_graph(graph_data)
+        if self.solver_master.checker.check(solution.graph):
+            return True
+        else:
+            for node in solution.graph.nodes:
+                solution.graph.nodes[node]['isGen'] = False
+            solution = self.run_ftlrp(solution)
+            return solution.to_dict()
