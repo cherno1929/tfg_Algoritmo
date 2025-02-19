@@ -6,7 +6,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <meta name="description" content="" />
         <meta name="author" content="" />
-        <title>Algorithm</title>
+        <title>Create Graph</title>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
         <link href="{{ url_for('static', filename='css/styles.css') }}" rel="stylesheet" />
         <link href="{{ url_for('static', filename='css/styles_graph.css') }}" rel="stylesheet">
@@ -24,15 +24,15 @@
                                 <div class="sb-nav-link-icon"><i class="fa-solid fa-house"></i></div>
                                 Main Menu
                             </a>
-                            <div class="sb-sidenav-menu-heading">Algorithm</div>
+                            <a class="nav-link" href="/algorithms">
+                                <div class="sb-nav-link-icon"><i class="fas fa-project-diagram"></i></div>
+                                Algorithm
+                            </a>
                             <a class="nav-link" href="/benchmarks">
                                 <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                                 Benchmarks
                             </a>
-                            <a class="nav-link" href="/graph_creator">
-                                <div class="sb-nav-link-icon"><i class="fas fa-pen"></i></div>
-                                Create Graphs
-                            </a>
+                            <div class="sb-sidenav-menu-heading">Create Graphs</div>
                         </div>
                     </div>
                 </nav>
@@ -48,50 +48,23 @@
                                 </p>
                             </div>
                         </div>
-
-                        <form id="form_graph">
-                            <div class="row">
-                                <div class="column">
-                                    <p>Number of nodes</p>
-                                    <input type="number" id="n_node" name="n_node" value="10">
-                                </div>
-                                <div class="column">
-                                    <p>Probability of link</p>
-                                    <input type="number" step="0.01" id="link_probability" name="prob_link" value="0.4">
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="column">
-                                    <p>Minimum distance of link</p>
-                                    <input type="number" id="min_link" name="min_dist" value="2">
-                                </div>
-                                <div class="column">
-                                    <p>Maximum distance if link</p>
-                                    <input type="number" id="max_link" name="max_dist" value="5">
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="column">
-                                    <p>Maximum distance allowed to travel</p>
-                                    <input type="number" id="max_travel" name="max_travel" value="8">
-                                </div>
-                            </div>
-                            <br>
-                            <button type="submit" class="btn btn-primary">Send</button>
-                        </form>
-
+                        
                         <div class="card mb-4">
                             <div class="card-header">
                                 <i class="fas fa-project-diagram"></i>
                                 Area Chart Example
                             </div>
-                            <div class="card-body"><canvas id="myAreaChart" width="100%" height="30"></canvas>
-                                <svg id="graph" class="svg" width="800" height="800"></svg>
+                            <div class="card-body" style="height: 600px;"><canvas id="myAreaChart" width="100%" height="30"></canvas>
+                                <svg class="svg" id="svg_data"></svg>
                             </div>
                             <div class="card-footer small text-muted"></div>
                         </div>
                         
-                        
+                        <form id="form_graph">
+                            <p>Max Distance</p><input type="number" id="max_dist"  value="100">
+                            <button type="submit">Is sol?</button>
+                        </form>
+
                         <div style="height: 25vh"></div>
                         <div class="card mb-4"><div class="card-body">This web does not have a database, so it doesn't record or collect any of your data</div> <div class="card-body"><a href="https://github.com/cherno1929/tfg_Algoritmo">Github</a></div></div>
                     </div>
@@ -100,44 +73,30 @@
         </div>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
         <script src="https://d3js.org/d3.v7.min.js"></script>
-        <script src="{{ url_for('static', filename='ftlp_menu.js') }}"></script>
+        <script src="{{ url_for('static', filename='graph_creator.js') }}"></script>
     </body>
 </html>
 
 <!--
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grafo en D3.js</title>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles_graph.css') }}">
+    <style>
+    </style>
 </head>
 <body>
-    <button onclick="location.href='/'">Home</button>
-    <br>
-    <p>This is an ftlrp algorithm solver, please give the data of your graph, and this solver will give you the result</p>
+    <button onclick="location.href='/'">Go Home</button>
+    
     <form id="form_graph">
-        <p>Number of nodes</p>
-        <input type="number" id="n_node" name="n_node" value="10">
-        <p>Probability of link</p>
-        <input type="number" step="0.01" id="link_probability" name="prob_link" value="0.4">
-        <p>Minimum distance of link</p>
-        <input type="number" id="min_link" name="min_dist" value="2">
-        <p>Maximum distance if link</p>
-        <input type="number" id="max_link" name="max_dist" value="5">
-        <p>Maximum distance allowed to travel</p>
-        <input type="number" id="max_travel" name="max_travel" value="8">
-        <br>
-        <button type="submit">Send</button>
+        <p>Max Distance</p><input type="number" id="max_dist"  value="100">
+        <button type="submit">Is sol?</button>
     </form>
-
-    <br>
-
-    <svg id="graph" width="800" height="800"></svg>
-
-    <script src="https://d3js.org/d3.v7.min.js"></script>
-    <script src="{{ url_for('static', filename='ftlp_menu.js') }}"></script>
-
+    <script src="{{ url_for('static', filename='graph_creator.js') }}"></script>
 </body>
 </html>
 -->

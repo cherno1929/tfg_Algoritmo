@@ -1,0 +1,40 @@
+.link {
+    stroke: #999;
+    stroke-opacity: 0.6;
+  }
+.node {
+  fill: #69b3a2;
+  stroke: #fff;
+  stroke-width: 1.5px;
+}
+
+.regenerator{
+  fill: red;
+  stroke: #fff;
+  stroke-width: 1.5px;
+}
+
+text {
+  font-size: 12px;
+  font-family: sans-serif;
+  pointer-events: none;
+}
+
+.svg { 
+  /*border: 1px solid black; */
+  max-width: 100%;
+  min-width: 90%;
+  min-height: 95%;
+  max-height: 100%;
+}
+
+line { 
+  stroke: #999; 
+  stroke-width: 2px; 
+}
+
+circle { 
+  fill: steelblue; 
+  stroke: white; 
+  stroke-width: 2px; 
+}

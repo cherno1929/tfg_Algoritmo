@@ -1,0 +1,223 @@
+
+const form_benchmark = document.getElementById("form_benchmarck")
+var graphs
+
+form_benchmark.addEventListener('submit', async (event) => {
+    //Avoid to send data directly
+    event.preventDefault()
+
+    //Entract data from form
+    let form_data  = new FormData(form_benchmark)
+    let data = Object.fromEntries(form_data.entries())
+
+    // Check if all data is correct
+    // ...
+
+    //Send data to server
+    try{
+        let response = await fetch('/api/benchmarks/general', {
+            method : 'POST',
+            headers:{
+                'Content-Type': 'application/json',
+            },
+            body : JSON.stringify(data)
+        })
+
+        if (response.ok){
+            solution = await response.json()
+            graphs = solution
+            draw_line_graphics(graph_to_linear_data(solution), "#line_graphic")
+            draw_line_graphics(graph_to_error_data(solution), "#error_graphic")
+            draw_bar_graphics(graph_to_node_link_data(solution), "#nl_graphic")
+            draw_table(solution)
+        }
+        
+    }catch(error){
+        console.error(error)
+    }
+
+})
+
+function draw_table(solutions){
+    let table = document.getElementById("table_graph")
+    table.innerHTML = ""
+    let i = 1
+    for (let n_sol in solutions){
+        solutions[n_sol].forEach(element => {
+            table.innerHTML += `<tr>
+                                    <th scope="row">${i}</th>
+                                    <td>${element.graph.nodes.length}</th>
+                                    <td>${element.graph.links.length}</td>
+                                    <td>${element.solution}</td>
+                                    <td>${element.time_to_solve}</td>
+                                  </tr>`
+            i++
+        });
+    }
+}
+
+function graph_to_error_data(data){
+    let info = []
+    for (let key in data){
+        n_error = 0
+        data[key].forEach(element => {
+            if (element.solution == null){
+                n_error += 1
+            }
+        });
+        info.push({x : parseInt(key), y : (n_error / data[key].length * 100)})
+    }
+    return info
+}
+
+function graph_to_linear_data(data){
+    let info = []
+    for (let key in data){
+        time_to_process = 0
+        data[key].forEach(element => {
+            time_to_process += element.time_to_solve
+        });
+        time_to_process /= data[key].length
+        info.push({x : parseInt(key), y : time_to_process})
+    }
+    return info
+}
+
+function graph_to_node_link_data(data){
+    let info = []
+    for (let key in data){
+        n_link = 0
+        data[key].forEach(element => {
+            n_link += element.graph.links.length
+        });
+        n_link /= data[key].length
+        info.push({x : parseInt(key), y : n_link})
+    }
+    return info
+}
+
+function draw_bar_graphics(data, svg_id){
+    
+    let html_element = document.getElementById(svg_id.substr(1, svg_id.length))
+    html_element.innerHTML = ""
+    
+    let dimensions = html_element.getBoundingClientRect()
+
+    const width = dimensions.width;
+    const height = dimensions.height;
+    const margin = { top: 30, right: 30, bottom: 70, left: 50 };
+
+    // Create svg
+    const svg = d3.select(svg_id)
+        .append("svg")
+        .attr("width", width)
+        .attr("height", height);
+
+    // Create dimensions of svg
+    const x = d3.scaleBand()
+        .domain(data.map(d => d.x)) 
+        .range([margin.left, width - margin.right])
+        .padding(0.2); 
+
+    const y = d3.scaleLinear()
+        .domain([0, d3.max(data, d => d.y)]) 
+        .nice() 
+        .range([height - margin.bottom, margin.top]); 
+
+    // Draw bars
+    svg.selectAll(".bar")
+        .data(data)
+        .enter().append("rect")
+        .attr("class", "bar")
+        .attr("x", d => x(d.x))
+        .attr("y", d => y(d.y))
+        .attr("width", x.bandwidth())  
+        .attr("height", d => height - margin.bottom - y(d.y)); 
+
+    // Add axis
+    svg.append("g")
+        .attr("transform", `translate(0,${height - margin.bottom})`)
+        .call(d3.axisBottom(x))  // Axi X
+        .selectAll("text")
+        .attr("transform", "rotate(-45)")
+        .style("text-anchor", "end");
+
+    svg.append("g")
+        .attr("transform", `translate(${margin.left},0)`)
+        .call(d3.axisLeft(y)); // Axi Y
+
+    // Add names
+    svg.selectAll(".label")
+        .data(data)
+        .enter().append("text")
+        .attr("class", "label")
+        .attr("x", d => x(d.x) + x.bandwidth() / 2) 
+        .attr("y", d => y(d.y) - 5) 
+        .text(d => d.y)
+        .style("fill", "black");
+}
+
+function draw_line_graphics(data, svg_id){
+
+    document.getElementById(svg_id.substr(1, svg_id.length)).innerHTML = ""
+
+    const width = 600;
+    const height = 400;
+    const margin = { top: 20, right: 30, bottom: 30, left: 40 };
+
+    const xScale = d3.scaleLinear()
+    .domain(d3.extent(data, d => d.x)) 
+    .range([margin.left, width - margin.right]); 
+
+    const yScale = d3.scaleLinear()
+    .domain([0, d3.max(data, d => d.y)])
+    .range([height - margin.bottom, margin.top]); 
+
+
+    const svg = d3.select(svg_id);
+
+    // Add axis
+    svg.append("g")
+        .attr("transform", `translate(0,${height - margin.bottom})`)
+        .call(d3.axisBottom(xScale));
+
+    svg.append("g")
+        .attr("transform", `translate(${margin.left},0)`)
+        .call(d3.axisLeft(yScale));
+
+    const line = d3.line()
+        .x(d => xScale(d.x))
+        .y(d => yScale(d.y))
+
+    // Add lines
+    svg.append("path")
+        .datum(data) 
+        .attr("fill", "none")
+        .attr("stroke", "steelblue")
+        .attr("stroke-width", 2)
+        .attr("d", line); 
+
+}
+
+function download_graphs(){
+    let header = "Numero Nodes;Numero Links;Solution;Time to solve\n"
+    let lines = ""
+    for (let key in graphs){
+        graphs[key].forEach(element => {
+            lines += key + ";" + element.graph.links.length + ";" + element.solution +";" + element.time_to_solve + "\n"
+        });
+    }
+
+    const csvString = header + lines
+    const blob = new Blob([csvString], { type: "text/csv;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+
+
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = "grafos.csv";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url); // Free url
+}
