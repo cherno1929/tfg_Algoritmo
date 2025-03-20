@@ -1,9 +1,10 @@
 
 const form_graph = document.getElementById("form_graph")
-
+const svgReal = document.querySelector("svg").getBoundingClientRect()
 const svg = d3.select("svg"),
-      width = +svg.attr("width"),
-      height = +svg.attr("height");
+      width = svgReal.left + svgReal.width / 2,
+      height = svgReal.top + svgReal.height / 2;
+
 
 form_graph.addEventListener('submit', async (event) => {
     //Avoid to send graph directly
@@ -13,6 +14,10 @@ form_graph.addEventListener('submit', async (event) => {
     let data = Object.fromEntries(formData.entries())
 
     try{
+
+        //Display loading animation
+        reverse_display(document.getElementById("graph"))
+        reverse_display(document.getElementById("loading_animation"))
 
         //Send data to server api
         let response = await fetch('/api/algorithms/ftlrp',{
@@ -28,6 +33,9 @@ form_graph.addEventListener('submit', async (event) => {
             document.getElementById("graph").innerHTML = ""
             show_graph(solution.graph)
             show_regenerators(solution.solution)
+            show_data(solution)
+            reverse_display(document.getElementById("graph"))
+            reverse_display(document.getElementById("loading_animation"))
         }else{
             console.error("Ocurrio un error")
         }
@@ -37,6 +45,26 @@ form_graph.addEventListener('submit', async (event) => {
     }
 
 })
+
+function reverse_display(element){
+  if (element.style.display === "block"){
+    element.style.display = "none"
+  }else{
+    element.style.display = "block"
+  }
+}
+
+function show_data(data){
+  if(data.solution != null){
+    document.getElementById("isSol").innerHTML = "Yes"
+    document.getElementById("sol_g").innerHTML = data.solution
+    document.getElementById("time_sol").innerHTML = data.time_to_solve + " sec"
+  }else{
+    document.getElementById("isSol").innerHTML = "No"
+    document.getElementById("sol_g").innerHTML = "..."
+    document.getElementById("time_sol").innerHTML = "..."
+  }
+}
 
 function show_regenerators(solution_node){
     if(solution_node != null){
@@ -49,7 +77,7 @@ function show_regenerators(solution_node){
 }
 
 function show_graph(graph){
-    
+
   // Create Force Simulation
   const simulation = d3.forceSimulation(graph.nodes)
   .force("link", d3.forceLink(graph.links).id(d => d.id).distance(100))
@@ -92,6 +120,7 @@ function show_graph(graph){
   .text(d => d.dist);
 
   // Update positions of nodes
+
   simulation.on("tick", () => {
   link
     .attr("x1", d => d.source.x)

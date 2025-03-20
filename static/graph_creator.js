@@ -15,8 +15,8 @@ let tempLink = null;
 
 const simulation = d3.forceSimulation(nodes)
     .force("link", d3.forceLink(links).id(d => d.id).distance(100))
-    .force("charge", d3.forceManyBody().strength(-10))
-    .force("center", d3.forceCenter(width / 2, height / 2));
+    .force("charge", d3.forceManyBody().strength(-5))
+    //.force("center", d3.forceCenter(width / 2, height / 2));
 
 function update() {
     svg.selectAll("line").remove();
@@ -99,12 +99,17 @@ function handleNodeClick(event, d) {
         // Follow mouse 
         svg.on("mousemove", (event) => {
             if (tempLink) {
-                let [x, y] = d3.pointer(event, svg.node())
+                let [x, y] = d3.pointer(event, svg.node()) // Coords of svg
+
+                // Adjust coords
+                let adjustedX = x 
+                let adjustedY = y 
+
                 tempLink
                     .attr("x1", selectedNode.x)
                     .attr("y1", selectedNode.y)
-                    .attr("x2", x)
-                    .attr("y2", y);
+                    .attr("x2", adjustedX)
+                    .attr("y2", adjustedY)
             }
         });
 
@@ -216,16 +221,37 @@ form_graph.addEventListener('submit', async () => {
         body: JSON.stringify(data)
     })
     is_sol = await response.json()
-    if (is_sol === true){
-        alert("Funciona")
+    console.log(is_sol)
+    console.log(nodes)
+    if(is_sol == true){
+        document.getElementById("isSol").innerHTML = "Yes"
+        document.getElementById("sol_g").innerHTML = get_gen_nodes(nodes)
     }else{
-        if (is_sol.solution != null){
-            alert("La solución es : " + is_sol.solution)
-        }else{
-            alert("No hay solución para este grafo")
-        }
+        show_data(is_sol)
     }
+    
 })
 
-update();
+function get_gen_nodes(data){
+    reg_nodes = []
+    data.forEach(element => {
+        if (element.isGen){
+            reg_nodes.push(element.id)
+        }
+    });
+    return reg_nodes
+}
 
+function show_data(data){
+    if(data.solution != null){
+      document.getElementById("isSol").innerHTML = "No"
+      document.getElementById("sol_g").innerHTML = data.solution
+      document.getElementById("time_sol").innerHTML = data.time_to_solve + " sec"
+    }else{
+      document.getElementById("isSol").innerHTML = "There is no solution"
+      document.getElementById("sol_g").innerHTML = "..."
+      document.getElementById("time_sol").innerHTML = "..."
+    }
+}
+
+update();

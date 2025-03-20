@@ -35,11 +35,12 @@ class Algorithm_Master:
         data['max_dist'] = int(data['max_dist'])
         data['max_travel'] = int(data['max_travel'])
         data['n_sample'] = int(data['n_sample'])
+        data['jump_node'] = int(data['jump_node'])
 
         statistic = Statistic()
 
 
-        for n_node in range(data['n_ini_node'], data['n_fin_node'] + 1):
+        for n_node in range(data['n_ini_node'], data['n_fin_node'] + 1, data['jump_node']):
             data['n_node'] = n_node
             n_sol = 0
             while n_sol < data['n_sample']:

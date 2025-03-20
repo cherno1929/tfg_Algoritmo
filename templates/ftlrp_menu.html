@@ -10,16 +10,17 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
         <link href="{{ url_for('static', filename='css/styles.css') }}" rel="stylesheet" />
         <link href="{{ url_for('static', filename='css/styles_graph.css') }}" rel="stylesheet">
+        <link href="{{ url_for('static', filename='css/animations.css') }}" rel="stylesheet">
     </head>
     <body>
         <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
-            <a class="navbar-brand ps-3" href="/">Cherno's Web App</a>
+            <a class="navbar-brand ps-3" href="/">FTRLP's Web App</a>
         </nav>
         <div id="layoutSidenav">
             <div id="layoutSidenav_nav">
                 <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
                     <div class="sb-sidenav-menu">
-                        <div class="nav">
+                        <div class="nav 🤓">
                             <a class="nav-link" href="/">
                                 <div class="sb-nav-link-icon"><i class="fa-solid fa-house"></i></div>
                                 Main Menu
@@ -39,61 +40,83 @@
             </div>
             <div id="layoutSidenav_content">
                 <main>
-                    <div class="container-fluid px-4">
-                        <h1 class="mt-4">About this project</h1>
+                    <div class="container-fluid px-4" style="width: 80%;">
+                        <h2 class="mt-4">FTRLP Solver</h2>
                         <div class="card mb-4">
                             <div class="card-body">
-                                <p class="mb-0">
-                                    This page let users to try the algorith, depending how the data in the form changes, the result may be different  
+                                <p class="mb-0 🤓">
+                                    This page let's you to try the algorithm, in the next form you can enter the data of the network that you want to create, then the program will create and find a solution for your case.   
                                 </p>
                             </div>
                         </div>
 
-                        <form id="form_graph">
+                        <form id="form_graph" class="🤓">
                             <div class="row">
                                 <div class="column">
                                     <p>Number of nodes</p>
                                     <input type="number" id="n_node" name="n_node" value="10">
                                 </div>
                                 <div class="column">
-                                    <p>Probability of link</p>
-                                    <input type="number" step="0.01" id="link_probability" name="prob_link" value="0.4">
+                                    <p>Number of edges per node</p>
+                                    <input type="number" id="link_probability" name="prob_link" value="2">
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="column">
                                     <p>Minimum distance of link</p>
-                                    <input type="number" id="min_link" name="min_dist" value="2">
+                                    <input type="number" id="min_link" name="min_dist" value="800">
                                 </div>
                                 <div class="column">
                                     <p>Maximum distance if link</p>
-                                    <input type="number" id="max_link" name="max_dist" value="5">
+                                    <input type="number" id="max_link" name="max_dist" value="2800">
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="column">
                                     <p>Maximum distance allowed to travel</p>
-                                    <input type="number" id="max_travel" name="max_travel" value="8">
+                                    <input type="number" id="max_travel" name="max_travel" value="3000">
                                 </div>
                             </div>
                             <br>
                             <button type="submit" class="btn btn-primary">Send</button>
                         </form>
-
+                        <br>
                         <div class="card mb-4">
                             <div class="card-header">
                                 <i class="fas fa-project-diagram"></i>
-                                Area Chart Example
+                                Graph Chart
                             </div>
-                            <div class="card-body"><canvas id="myAreaChart" width="100%" height="30"></canvas>
-                                <svg id="graph" class="svg" width="800" height="800"></svg>
+                            <div class="card-header">
+                                <table>
+                                    <tr>
+                                        <th style="padding: 10px;">
+                                            <div>
+                                                Is Solution : <p id="isSol">...</p>
+                                            </div>
+                                        </th>
+                                        <th style="padding: 10px;">
+                                            <div>
+                                                Solution : <p id="sol_g">...</p>
+                                            </div>
+                                        </th>
+                                        <th style="padding: 10px;">
+                                            <div>
+                                                Time to solve : <p id="time_sol">...</p>
+                                            </div>
+                                        </th>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div class="card-body">
+                                <!--Loading Animation-->
+                                <div id="loading_animation" style="display: none;" class="loading_animation"></div>
+                                <svg id="graph" style="display: block;" class="svg"></svg>
                             </div>
                             <div class="card-footer small text-muted"></div>
                         </div>
                         
-                        
                         <div style="height: 25vh"></div>
-                        <div class="card mb-4"><div class="card-body">This web does not have a database, so it doesn't record or collect any of your data</div> <div class="card-body"><a href="https://github.com/cherno1929/tfg_Algoritmo">Github</a></div></div>
+                        <div class="card mb-4"><div class="card-body">You can check the code here</div> <div class="card-body"><a href="https://github.com/cherno1929/tfg_Algoritmo">Github</a></div></div>
                     </div>
                 </main>
             </div>
@@ -103,41 +126,3 @@
         <script src="{{ url_for('static', filename='ftlp_menu.js') }}"></script>
     </body>
 </html>
-
-<!--
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles_graph.css') }}">
-</head>
-<body>
-    <button onclick="location.href='/'">Home</button>
-    <br>
-    <p>This is an ftlrp algorithm solver, please give the data of your graph, and this solver will give you the result</p>
-    <form id="form_graph">
-        <p>Number of nodes</p>
-        <input type="number" id="n_node" name="n_node" value="10">
-        <p>Probability of link</p>
-        <input type="number" step="0.01" id="link_probability" name="prob_link" value="0.4">
-        <p>Minimum distance of link</p>
-        <input type="number" id="min_link" name="min_dist" value="2">
-        <p>Maximum distance if link</p>
-        <input type="number" id="max_link" name="max_dist" value="5">
-        <p>Maximum distance allowed to travel</p>
-        <input type="number" id="max_travel" name="max_travel" value="8">
-        <br>
-        <button type="submit">Send</button>
-    </form>
-
-    <br>
-
-    <svg id="graph" width="800" height="800"></svg>
-
-    <script src="https://d3js.org/d3.v7.min.js"></script>
-    <script src="{{ url_for('static', filename='ftlp_menu.js') }}"></script>
-
-</body>
-</html>
--->

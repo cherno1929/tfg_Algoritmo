@@ -12,13 +12,13 @@
     </head>
     <body>
         <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
-            <a class="navbar-brand ps-3" href="/">Cherno's Web App</a>
+            <a class="navbar-brand ps-3" href="/">FTRLP's Web App</a>
         </nav>
         <div id="layoutSidenav">
             <div id="layoutSidenav_nav">
                 <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
                     <div class="sb-sidenav-menu">
-                        <div class="nav">
+                        <div class="nav 🤓">
                             <div class="sb-sidenav-menu-heading">Main Menu</div>
                             <a class="nav-link" href="/algorithms">
                                 <div class="sb-nav-link-icon">
@@ -44,17 +44,69 @@
             </div>
             <div id="layoutSidenav_content">
                 <main>
-                    <div class="container-fluid px-4">
+                    <div class="container-fluid px-4" style="max-width: 75%;">
                         <h1 class="mt-4">About this project</h1>
                         <div class="card mb-4">
                             <div class="card-body">
-                                <p class="mb-0">
-                                    This project is a web aplication was created as an user interface to help users understand the fltrp algorithm.
+                                <p class="mb-0 🤓">
+                                    This project is a web aplication created on Flask to help users solve and understand the FTRLP Algorithm,
+                                    by giving them a web application interface to help them solve/understand this problem.
+                                </p>
+                            </div>
+                        </div>
+                        <br>
+                        <h2 class="mt-4">What is the FTRLP problem</h2>
+                        <div class="card mb-4">
+                            <div class="card-body">
+                                <p class="mb-0 🤓">
+                                    FTRLP stands for <b>"Fault Tolerant Regenerator Location Problem"</b>, now imagine a network of nodes and each node 
+                                    wants to be able to connect with each other but there is a restriction of the distance that the signal of the node can reach.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="card mb-4">
+                            <div class="card-body">
+                                <p class="mb-0 🤓">
+                                    But it can be used a <b>Signal Regenerator</b> to regenerate the signal so the node that has it can make the signals of other nodes 
+                                    reach further if they send it to this node.
+                                </p>
+                            </div>
+                        </div>
+                        <img src="{{ url_for('static', filename='img/image.png') }}" alt="">
+                        <div class="card mb-4">
+                            <div class="card-body">
+                                <p class="mb-0 🤓">
+                                    I this example the network with no regenerators makes impossible to no nodes to be able to connect with all each other, but if 
+                                    its used some regenerators in nodes <b>[1,2,3,4]</b> now the nodes can reach all each other.
+                                </p>
+                            </div>
+                        </div>
+                        <br>
+                        <h2 class="mt-4">What does FTRLP Algorithm do?</h2>
+                        <div class="card mb-4">
+                            <div class="card-body">
+                                <p class="mb-0 🤓">
+                                    Now the FTRLP Algorithm will figure out wich nodes activate as regenerators taking into account that some links of the network may fail,
+                                    trying to find the combination of least number regenerators that makes the network work.
+                                </p>
+                            </div>
+                        </div>
+                        <h2 class="mt-4">Tools</h2>
+                        <div class="card mb-4">
+                            <div class="card-body 🤓">
+                                <p>
+                                    If you want to try it yourself ✏️, you can <a href="/graph_creator">build your own network 🏗️</a> and get feedback of how it works.
+                                </p>
+                                <p>
+                                    If you need to generate a neetwork with big amount of nodes and get data if it <a href="/algorithms">click here ⚙️</a>.
+                                </p>
+                                <p>
+                                    If you need to do multiple benchmarks 🧾 you can use this <a href="/benchmarks">tool</a>.
                                 </p>
                             </div>
                         </div>
                         <div style="height: 25vh"></div>
-                        <div class="card mb-4"><div class="card-body">This web does not have a database, so it doesn't record or collect any of your data</div> <div class="card-body"><a href="https://github.com/cherno1929/tfg_Algoritmo">Github</a></div></div>
+                        <div class="card mb-4"><div class="card-body">You can check the code here</div> <div class="card-body"><a href="https://github.com/cherno1929/tfg_Algoritmo">Github</a></div></div>
                     </div>
                 </main>
             </div>
@@ -62,27 +114,3 @@
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
     </body>
 </html>
-
-<!--
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-    <button onclick="location.href='/algorithms'">
-        Use algorithm
-    </button>
-    <button onclick="location.href='/benchmarks'">
-        Do benchmarck
-    </button>
-    <button onclick="location.href='/more-about'">
-        Why this project
-    </button>
-    <button onclick="location.href='/graph_creator'">
-        Create Graph
-    </button>
-</body>
-</html>
--->

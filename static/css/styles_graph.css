@@ -20,12 +20,27 @@ text {
   pointer-events: none;
 }
 
+.svg_container{
+  min-height: 400px;
+}
+
 .svg { 
-  /*border: 1px solid black; */
+  width: 100%;
+  aspect-ratio: 1/0.65;
+}
+
+.svg_2 { 
+  width: 100%;
+  aspect-ratio: 1/0.4;
+}
+
+.svg_special {
   max-width: 100%;
   min-width: 90%;
   min-height: 95%;
   max-height: 100%;
+  transform:none;
+  position: absolute;
 }
 
 line { 
@@ -37,4 +52,9 @@ circle {
   fill: steelblue; 
   stroke: white; 
   stroke-width: 2px; 
+}
+
+.flex_form{
+  display: flex;
+  flex-direction: row;
 }

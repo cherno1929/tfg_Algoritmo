@@ -14,7 +14,11 @@ form_benchmark.addEventListener('submit', async (event) => {
     // ...
 
     //Send data to server
+    console.log("Info Enviada!")
     try{
+
+        show_hide_loading_animation()
+
         let response = await fetch('/api/benchmarks/general', {
             method : 'POST',
             headers:{
@@ -26,6 +30,7 @@ form_benchmark.addEventListener('submit', async (event) => {
         if (response.ok){
             solution = await response.json()
             graphs = solution
+            show_hide_loading_animation()
             draw_line_graphics(graph_to_linear_data(solution), "#line_graphic")
             draw_line_graphics(graph_to_error_data(solution), "#error_graphic")
             draw_bar_graphics(graph_to_node_link_data(solution), "#nl_graphic")
@@ -37,6 +42,21 @@ form_benchmark.addEventListener('submit', async (event) => {
     }
 
 })
+
+function show_hide_loading_animation(){
+    elements = ["line_graphic", "nl_graphic", "error_graphic", "loading_animation_1", "loading_animation_2", "loading_animation_3"]
+    elements.forEach(element => {
+        show_hide_element(document.getElementById(element))
+    });
+}
+
+function show_hide_element(element){
+    if(element.style.display === "block"){
+        element.style.display = "none"
+    }else{
+        element.style.display = "block"
+    }
+}
 
 function draw_table(solutions){
     let table = document.getElementById("table_graph")
@@ -72,12 +92,15 @@ function graph_to_error_data(data){
 
 function graph_to_linear_data(data){
     let info = []
+    let n_sample = Number(document.getElementById("n_sample").value)
     for (let key in data){
         time_to_process = 0
         data[key].forEach(element => {
-            time_to_process += element.time_to_solve
+            if (element.solution != null){
+                time_to_process += element.time_to_solve
+            }
         });
-        time_to_process /= data[key].length
+        time_to_process /= n_sample
         info.push({x : parseInt(key), y : time_to_process})
     }
     return info
@@ -140,11 +163,13 @@ function draw_bar_graphics(data, svg_id){
         .call(d3.axisBottom(x))  // Axi X
         .selectAll("text")
         .attr("transform", "rotate(-45)")
-        .style("text-anchor", "end");
+        .style("text-anchor", "end")
+        //.text("Nº Nodes")
 
     svg.append("g")
         .attr("transform", `translate(${margin.left},0)`)
-        .call(d3.axisLeft(y)); // Axi Y
+        .call(d3.axisLeft(y))
+        //.text("Nº Errors") // Axi Y
 
     // Add names
     svg.selectAll(".label")
@@ -159,11 +184,13 @@ function draw_bar_graphics(data, svg_id){
 
 function draw_line_graphics(data, svg_id){
 
-    document.getElementById(svg_id.substr(1, svg_id.length)).innerHTML = ""
+    let id = svg_id.substr(1, svg_id.length)
+    document.getElementById(id).innerHTML = ""
+    const svgReal = document.getElementById(id).getBoundingClientRect()
 
-    const width = 600;
-    const height = 400;
-    const margin = { top: 20, right: 30, bottom: 30, left: 40 };
+    const width = svgReal.width
+    const height = svgReal.height
+    const margin = { top: 20, right: 30, bottom: 30, left: 40 }
 
     const xScale = d3.scaleLinear()
     .domain(d3.extent(data, d => d.x)) 
@@ -179,11 +206,13 @@ function draw_line_graphics(data, svg_id){
     // Add axis
     svg.append("g")
         .attr("transform", `translate(0,${height - margin.bottom})`)
-        .call(d3.axisBottom(xScale));
+        .call(d3.axisBottom(xScale))
+        //.text("Nº Nodes")
 
     svg.append("g")
         .attr("transform", `translate(${margin.left},0)`)
-        .call(d3.axisLeft(yScale));
+        .call(d3.axisLeft(yScale))
+        //.text(svg_id => svg_id === "#line_graphic" ? "Time (sec)" : "")
 
     const line = d3.line()
         .x(d => xScale(d.x))

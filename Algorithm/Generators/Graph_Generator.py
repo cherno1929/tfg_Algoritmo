@@ -34,7 +34,7 @@ class Graph_Generator:
 
     def generate_graph(self, num_node, prob_edge, max_dist, min_edge, max_edge):
         # Create a graph based on Erdos-Renyi
-        g = nx.erdos_renyi_graph(num_node, prob_edge)
+        g = nx.erdos_renyi_graph(num_node, prob_edge / (num_node - 1))
         g.graph['l_max'] = max_dist
         self.fill_graph_with_data(g, min_edge, max_edge)
         return Solution(g, self.__get_best_nodes__(g))

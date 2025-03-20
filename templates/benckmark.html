@@ -7,20 +7,22 @@
         <meta name="description" content="" />
         <meta name="author" content="" />
         <title>Benchmarks</title>
+        <link rel="icon" type="image/png" href="">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
         <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
         <link href="{{ url_for('static', filename='css/styles.css') }}" rel="stylesheet" />
         <link href="{{ url_for('static', filename='css/styles_graph.css') }}" rel="stylesheet">
+        <link href="{{ url_for('static', filename='css/animations.css') }}" rel="stylesheet">
     </head>
     <body>
         <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
-            <a class="navbar-brand ps-3" href="/">Cherno's Web App</a>
+            <a class="navbar-brand ps-3" href="/">FTRLP's Web App</a>
         </nav>
         <div id="layoutSidenav">
             <div id="layoutSidenav_nav">
                 <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
                     <div class="sb-sidenav-menu">
-                        <div class="nav">
+                        <div class="nav 🤓">
                             <a class="nav-link" href="/">
                                 <div class="sb-nav-link-icon"><i class="fa-solid fa-house"></i></div>
                                 Main Menu
@@ -40,12 +42,13 @@
             </div>
             <div id="layoutSidenav_content">
                 <main>
-                    <div class="container-fluid px-4">
-                        <h1 class="mt-4">About this project</h1>
+                    <div class="container-fluid px-4 🤓" style="width: 80%;">
+                        <h1 class="mt-4">Benchmarks</h1>
                         <div class="card mb-4">
                             <div class="card-body">
                                 <p class="mb-0">
-                                    This page is meant for doing test, getting data, and making statistics graphcs in order to ease reserche.  
+                                    This is the section for benchmarks, now you can enter the data in the next form, the program will generate graphs according to the input data and 
+                                    will test all of them until it gets the number of samples needed per number of nodes.
                                 </p>
                             </div>
                         </div>
@@ -61,26 +64,30 @@
                                     <input type="number" id="n_fin_node" name="n_fin_node" value="13">
                                 </div>
                                 <div class="column">
-                                    <p>Probability of link</p>
-                                    <input type="number" step="0.01" id="link_probability" name="prob_link" value="0.4">
+                                    <p>Jump value between the number of nodes</p>
+                                    <input type="number" id="jump_node" name="jump_node" value="1">
+                                </div>
+                                <div class="column">
+                                    <p>Number of edges per node</p>
+                                    <input type="number" id="link_probability" name="prob_link" value="14">
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="column">
                                     <p>Number of sample per number of nodes</p>
-                                    <input type="number" id="n_sample" name="n_sample" value="1">
+                                    <input type="number" id="n_sample" name="n_sample" value="5">
                                 </div>
                                 <div class="column">
                                     <p>Minimum distance of link</p>
-                                    <input type="number" id="min_link" name="min_dist" value="1">
+                                    <input type="number" id="min_link" name="min_dist" value="800">
                                 </div>
                                 <div class="column">
                                     <p>Maximum distance if link</p>
-                                    <input type="number" id="max_link" name="max_dist" value="3">
+                                    <input type="number" id="max_link" name="max_dist" value="2800">
                                 </div>
                                 <div class="column">
                                     <p>Maximum distance allowed to travel</p>
-                                    <input type="number" id="max_travel" name="max_travel" value="4">
+                                    <input type="number" id="max_travel" name="max_travel" value="3000">
                                 </div>
                             </div>
                             <br>
@@ -89,13 +96,28 @@
                         
                         <br>
 
+                        <h2 class="mt-4">Charts</h2>
+                        <div class="card mb-4">
+                            <div class="card-body">
+                                <p class="mb-0">
+                                    After getting the samples of the graphs, now this data will be exposed in the next charts.
+                                </p>
+                                <p>The fist one is a linear chart with nº nodes🔵🔵 / time⌛.</p>
+                                <p>The second one is a bar chart with nº errors👾👾 / nº nodes🔵🔵.</p>
+                                <p>The last one is a linear graph with nº nodes🔵🔵 / nº links⛓️⛓️.</p>
+                            </div>
+                        </div>
+                        <br>
+
                         <div class="card mb-4">
                             <div class="card-header">
                                 <i class="fas fa-chart-area me-1"></i>
-                                Area Chart Example
+                                Nº Nodes / Time (sec)
                             </div>
-                            <div class="card-body"><canvas id="myAreaChart" width="100%" height="30"></canvas>
-                                <svg id="line_graphic" width="600" height="400"></svg>
+                            <div class="card-body svg_container">
+                                <!--Loading Animation-->
+                                <div id="loading_animation_1" style="display: none;" class="loading_animation"></div>
+                                <svg id="line_graphic" style="display: block;" class="svg_2"></svg>
                             </div>
                             <div class="card-footer small text-muted"></div>
                         </div>
@@ -105,33 +127,50 @@
                                 <div class="card mb-4">
                                     <div class="card-header">
                                         <i class="fas fa-chart-bar me-1"></i>
-                                        Bar Chart Example
+                                        Nº Links / Nº Nodes
                                     </div>
-                                    <div class="card-body"><canvas id="myBarChart" width="100%" height="50"></canvas>
-                                        <svg id="nl_graphic" width="600" height="400"></svg>
+                                    <div class="card-body svg_container"> 
+                                        <!--Loading Animation-->
+                                        <div id="loading_animation_2" style="display: none;" class="loading_animation"></div>
+                                        <svg id="nl_graphic" style="display: block;" class="svg"></svg>
                                     </div>
-                                    <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
+                                    <div class="card-footer small text-muted"></div>
                                 </div>
                             </div>
                             <div class="col-lg-6">
                                 <div class="card mb-4">
                                     <div class="card-header">
                                         <i class="fas fa-chart-area me-1"></i>
-                                        Pie Chart Example
+                                        Nº Nodes / Nº Errors
                                     </div>
-                                    <div class="card-body"><canvas id="myPieChart" width="100%" height="50"></canvas>
-                                        <svg id="error_graphic" width="600" height="400"></svg>
+                                    <div class="card-body svg_container">
+                                        <!--Loading Animation-->
+                                        <div id="loading_animation_3" style="display: none;" class="loading_animation"></div>
+                                        <svg id="error_graphic" style="display: block;" class="svg"></svg>
                                     </div>
-                                    <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
+                                    <div class="card-footer small text-muted"></div>
                                 </div>
+                            </div>
+                        </div>
+                        <br>
+                        <h2 class="mt-4">Pure Data</h2>
+                        <div class="card mb-4">
+                            <div class="card-body">
+                                <p class="mb-0">
+                                    This table will show the date of all the samples taken, if its needed to seach for more precise data.
+                                </p>
+                                <p class="mb-0">
+                                    If its needed you can download the data of all the samples into a csv if more research is needed.
+                                </p>
                             </div>
                         </div>
 
                         <div class="card mb-4">
                             <div class="card-header">
                                 <i class="fas fa-table me-1"></i>
-                                DataTable Example
+                                DataTable
                             </div>
+                            <button class="btn btn-success" onclick="download_graphs()">Download .csv</button>
                             <table class="table table-sm">
                                 <thead>
                                   <tr>
@@ -143,23 +182,13 @@
                                   </tr>
                                 </thead>
                                 <tbody id="table_graph">
-                                    <!--
-                                  <tr>
-                                    <th scope="row">1</th>
-                                    <td>Mark</td>
-                                    <td>Otto</td>
-                                    <td>@mdo</td>
-                                  </tr>
-                                    -->
                                 </tbody>
                             </table>
-                            <br>
-                            <button class="btn btn-success" onclick="download_graphs()">Descargar .csv</button>
                         </div>
                     </div>
                         
                         <div style="height: 25vh"></div>
-                        <div class="card mb-4"><div class="card-body">This web does not have a database, so it doesn't record or collect any of your data</div> <div class="card-body"><a href="https://github.com/cherno1929/tfg_Algoritmo">Github</a></div></div>
+                        <div class="card mb-4"><div class="card-body">You can check the code here</div> <div class="card-body"><a href="https://github.com/cherno1929/tfg_Algoritmo">Github</a></div></div>
                     </div>
                 </main>
             </div>
@@ -170,52 +199,3 @@
     </body>
 </html>
 
-
-<!--
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-    <button onclick="location.href='/'">Home</button>
-    <br>
-    <p>This is an ftlrp algorithm solver, please give the data of your graph, and this solver will give you the result</p>
-    <form id="form_benchmarck">
-        <p>Initial number of nodes</p>
-        <input type="number" id="n_ini_node" name="n_ini_node" value="10">
-        <p>Final number of nodes</p>
-        <input type="number" id="n_fin_node" name="n_fin_node" value="13">
-        <p>Probability of link</p>
-        <input type="number" step="0.01" id="link_probability" name="prob_link" value="0.4">
-        <p>Number of sample per number of nodes</p>
-        <input type="number" id="n_sample" name="n_sample" value="1">
-        <p>Minimum distance of link</p>
-        <input type="number" id="min_link" name="min_dist" value="1">
-        <p>Maximum distance if link</p>
-        <input type="number" id="max_link" name="max_dist" value="3">
-        <p>Maximum distance allowed to travel</p>
-        <input type="number" id="max_travel" name="max_travel" value="4">
-        <br>
-        <button type="submit">Send</button>
-    </form>
-
-    
-    <button onclick="download_graphs()">Descargar Info</button>
-
-
-    <svg id="line_graphic" width="600" height="400"></svg>
-
-    <svg id="nl_graphic" width="600" height="400"></svg>
-
-    <svg id="error_graphic" width="600" height="400"></svg>
-
-    <br>
-
-</body>
-    <script src="https://d3js.org/d3.v7.min.js"></script>
-    <script src="{{ url_for('static', filename='benchmark_menu.js') }}"></script>
-</html>
-
--->

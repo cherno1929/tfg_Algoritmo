@@ -13,13 +13,13 @@
     </head>
     <body>
         <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
-            <a class="navbar-brand ps-3" href="/">Cherno's Web App</a>
+            <a class="navbar-brand ps-3" href="/">FTRLP's Web App</a>
         </nav>
         <div id="layoutSidenav">
             <div id="layoutSidenav_nav">
                 <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
                     <div class="sb-sidenav-menu">
-                        <div class="nav">
+                        <div class="nav 🤓">
                             <a class="nav-link" href="/">
                                 <div class="sb-nav-link-icon"><i class="fa-solid fa-house"></i></div>
                                 Main Menu
@@ -39,12 +39,28 @@
             </div>
             <div id="layoutSidenav_content">
                 <main>
-                    <div class="container-fluid px-4">
-                        <h1 class="mt-4">About this project</h1>
+                    <div class="container-fluid px-4 🤓" style="width: 80%;">
+                        <h1 class="mt-4">Graph Creator</h1>
                         <div class="card mb-4">
                             <div class="card-body">
                                 <p class="mb-0">
-                                    This page let users to try the algorith, depending how the data in the form changes, the result may be different  
+                                    In the chart of bottom you can create a network, and pressing the button of <b>solution</b> you will get feedback of the network.
+                                </p>
+                            </div>
+                        </div>
+
+                        <br>
+                        <h2 class="mt-4">How to create the network</h2>
+                        <div class="card mb-4">
+                            <div class="card-body">
+                                <p class="mb-0">
+                                    Doing a double click 👆👆 on the lable will create a new node 🔵. 
+                                </p>
+                                <p>
+                                    Doing a right click 👆➡️ on a node will make it a regenerator 🔴.
+                                </p>
+                                <p>
+                                    If you click on a node and click to another, it will create a link ⛓️‍💥⛓️. 
                                 </p>
                             </div>
                         </div>
@@ -52,9 +68,30 @@
                         <div class="card mb-4">
                             <div class="card-header">
                                 <i class="fas fa-project-diagram"></i>
-                                Area Chart Example
+                                Graph Creator Chart
                             </div>
-                            <div class="card-body" style="height: 600px;"><canvas id="myAreaChart" width="100%" height="30"></canvas>
+                            <div class="card-header">
+                                <table>
+                                    <tr>
+                                        <th style="padding: 10px;">
+                                            <div>
+                                                Is Solution : <p id="isSol">...</p>
+                                            </div>
+                                        </th>
+                                        <th style="padding: 10px;">
+                                            <div>
+                                                Solution : <p id="sol_g">...</p>
+                                            </div>
+                                        </th>
+                                        <th style="padding: 10px;">
+                                            <div>
+                                                Time to check : <p id="time_sol">...</p>
+                                            </div>
+                                        </th>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div class="card-body svg_container" style="height: 600px;">
                                 <svg class="svg" id="svg_data"></svg>
                             </div>
                             <div class="card-footer small text-muted"></div>
@@ -62,11 +99,11 @@
                         
                         <form id="form_graph">
                             <p>Max Distance</p><input type="number" id="max_dist"  value="100">
-                            <button type="submit">Is sol?</button>
+                            <button type="submit" class="btn btn-primary">Is sol?</button>
                         </form>
 
                         <div style="height: 25vh"></div>
-                        <div class="card mb-4"><div class="card-body">This web does not have a database, so it doesn't record or collect any of your data</div> <div class="card-body"><a href="https://github.com/cherno1929/tfg_Algoritmo">Github</a></div></div>
+                        <div class="card mb-4"><div class="card-body">You can check the code here</div> <div class="card-body"><a href="https://github.com/cherno1929/tfg_Algoritmo">Github</a></div></div>
                     </div>
                 </main>
             </div>
@@ -76,27 +113,3 @@
         <script src="{{ url_for('static', filename='graph_creator.js') }}"></script>
     </body>
 </html>
-
-<!--
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Grafo en D3.js</title>
-    <script src="https://d3js.org/d3.v7.min.js"></script>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles_graph.css') }}">
-    <style>
-    </style>
-</head>
-<body>
-    <button onclick="location.href='/'">Go Home</button>
-    
-    <form id="form_graph">
-        <p>Max Distance</p><input type="number" id="max_dist"  value="100">
-        <button type="submit">Is sol?</button>
-    </form>
-    <script src="{{ url_for('static', filename='graph_creator.js') }}"></script>
-</body>
-</html>
--->
