@@ -89,6 +89,17 @@
                                     <p>Maximum distance allowed to travel</p>
                                     <input type="number" id="max_travel" name="max_travel" value="3000">
                                 </div>
+                                <br>
+                                <br>
+                                <div class="column">
+                                    <label for="algorithm">Choose a Algorithm:</label>
+                                        <select name="algorithm" id="select-algorithm">
+                                        <option value="">Please choose an Algorithm</option>
+                                        <option value="o">Optimal</option>
+                                        <option value="r">Random</option>
+                                        <option value="g">Greedy</option>
+                                        </select>
+                                </div>
                             </div>
                             <br>
                             <button class="btn btn-primary" type="submit">Send</button>
@@ -177,6 +188,7 @@
                                     <th scope="col">#</th>
                                     <th scope="col">Numero Nodes</th>
                                     <th scope="col">Numero Links</th>
+                                    <th scope="col">Algorithm</th>
                                     <th scope="col">Solution</th>
                                     <th scope="col">Time to solve</th>
                                   </tr>

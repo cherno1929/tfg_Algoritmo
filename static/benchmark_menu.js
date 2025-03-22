@@ -1,6 +1,7 @@
 
 const form_benchmark = document.getElementById("form_benchmarck")
 var graphs
+var algorithm_type
 
 form_benchmark.addEventListener('submit', async (event) => {
     //Avoid to send data directly
@@ -14,7 +15,6 @@ form_benchmark.addEventListener('submit', async (event) => {
     // ...
 
     //Send data to server
-    console.log("Info Enviada!")
     try{
 
         show_hide_loading_animation()
@@ -30,11 +30,14 @@ form_benchmark.addEventListener('submit', async (event) => {
         if (response.ok){
             solution = await response.json()
             graphs = solution
+            console.log(graphs)
+            algorithm_type = graphs[-1]
+            delete graphs[-1]
             show_hide_loading_animation()
-            draw_line_graphics(graph_to_linear_data(solution), "#line_graphic")
-            draw_line_graphics(graph_to_error_data(solution), "#error_graphic")
-            draw_bar_graphics(graph_to_node_link_data(solution), "#nl_graphic")
-            draw_table(solution)
+            draw_line_graphics(graph_to_linear_data(graphs), "#line_graphic")
+            draw_line_graphics(graph_to_error_data(graphs), "#error_graphic")
+            draw_bar_graphics(graph_to_node_link_data(graphs), "#nl_graphic")
+            draw_table(graphs)
         }
         
     }catch(error){
@@ -61,18 +64,36 @@ function show_hide_element(element){
 function draw_table(solutions){
     let table = document.getElementById("table_graph")
     table.innerHTML = ""
-    let i = 1
+    line_count = 0
+    if (algorithm_type == 'g'){
+        algorithm_type = 'Greedy'
+    } else if (algorithm_type == 'o'){
+        algorithm_type = 'Optimal'
+    }else{
+        algorithm_type = 'Random'
+    }
+    draw_table_line(solutions)
+}
+
+var line_count = 0
+
+function draw_table_line(solutions){
+    let table = document.getElementById("table_graph")
     for (let n_sol in solutions){
         solutions[n_sol].forEach(element => {
             table.innerHTML += `<tr>
-                                    <th scope="row">${i}</th>
+                                    <th scope="row">${line_count}</th>
                                     <td>${element.graph.nodes.length}</th>
                                     <td>${element.graph.links.length}</td>
-                                    <td>${element.solution}</td>
+                                    <td>${algorithm_type}</td>
+                                    <td>${element.solution != null ? '[' + element.solution + ']' : element.solution}</td>
                                     <td>${element.time_to_solve}</td>
                                   </tr>`
-            i++
+            line_count++
         });
+        if(line_count > 100){
+            break
+        }
     }
 }
 
@@ -229,11 +250,11 @@ function draw_line_graphics(data, svg_id){
 }
 
 function download_graphs(){
-    let header = "Numero Nodes;Numero Links;Solution;Time to solve\n"
+    let header = "Numero Nodes;Numero Links;Algorithm;Solution;Time to solve\n"
     let lines = ""
     for (let key in graphs){
         graphs[key].forEach(element => {
-            lines += key + ";" + element.graph.links.length + ";" + element.solution +";" + element.time_to_solve + "\n"
+            lines += key + ";" + element.graph.links.length + ";" + algorithm_type + ";" + element.solution +";" + element.time_to_solve + "\n"
         });
     }
 

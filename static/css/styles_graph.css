@@ -27,11 +27,13 @@ text {
 .svg { 
   width: 100%;
   aspect-ratio: 1/0.65;
+  max-height: 100%;
 }
 
 .svg_2 { 
   width: 100%;
   aspect-ratio: 1/0.4;
+  max-height: 100%;
 }
 
 .svg_special {

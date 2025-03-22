@@ -24,7 +24,7 @@ class Algorithm_Master:
             data['prob_link'] = float(data['prob_link'])
         solution = self.graph_generator.generate_graph(data['n_node'], data['prob_link'], data['max_travel'], data['min_dist'], data['max_dist'])
 
-        return self.run_ftlrp(solution)
+        return self.run_ftlrp(solution, data['algorithm'][0])
 
     def run_benchmark(self, data):
         # Transform data
@@ -36,8 +36,10 @@ class Algorithm_Master:
         data['max_travel'] = int(data['max_travel'])
         data['n_sample'] = int(data['n_sample'])
         data['jump_node'] = int(data['jump_node'])
+        if len(data['algorithm']) == 0:
+            data['algorithm'] = 'g'
 
-        statistic = Statistic()
+        statistic = Statistic(data['algorithm'])
 
 
         for n_node in range(data['n_ini_node'], data['n_fin_node'] + 1, data['jump_node']):
@@ -55,9 +57,14 @@ class Algorithm_Master:
 
         return statistic
 
-    def run_ftlrp(self, solution):
+    def run_ftlrp(self, solution, algorithm = 'g'):
         start_time = time.time()
-        self.solver_master.solve_greedy(solution)
+        if algorithm == 'o':
+            self.solver_master.solve_optimal(solution)
+        elif algorithm == 'r':
+            self.solver_master.solver_random(solution)
+        else:
+            self.solver_master.solve_greedy(solution)
         end_time = time.time()
         solution.time_to_solve = end_time - start_time
         return solution
