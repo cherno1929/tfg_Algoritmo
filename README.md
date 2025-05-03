@@ -26,8 +26,17 @@ Este proyecto utiliza:
 1. Clona o descarga este repositorio.
 2. Instala las dependencias necesarias:
     ```bash
-    pip install flask networkx
+    pip install flask 
     ```
+   
+   ```bash
+    pip install networkx 
+    ```
+   
+   ```bash
+    pip install matplotlib
+    ```
+
 3. Ejecuta la aplicación:
     ```bash
     python app.py
