@@ -249,12 +249,23 @@ function draw_line_graphics(data, svg_id){
 
 }
 
+function modificar_formulario(){
+    let type_algorithm = document.getElementById("select-algorithm").value
+    if (type_algorithm === "r"){
+        document.getElementById("option_algorithm").innerHTML = `<p>Propability of activating a node</p>
+                                    <input type="number" id="ramdom_activation" name="ramdom_activation" value="20">`
+    }else if (type_algorithm === "g"){
+        document.getElementById("option_algorithm").innerHTML = `<p>Porcentage of destrion</p>
+                                    <input type="number" id="greedy_destruction" name="greedy_destruction" value="5">`
+    }
+}
+
 function download_graphs(){
     let header = "Numero Nodes;Numero Links;Algorithm;Solution;Time to solve\n"
     let lines = ""
     for (let key in graphs){
         graphs[key].forEach(element => {
-            lines += key + ";" + element.graph.links.length + ";" + algorithm_type + ";" + element.solution +";" + element.time_to_solve + "\n"
+            lines += key + ";" + element.graph.links.length + ";" + algorithm_type + ";" + element.solution +";" + element.time_to_solve.toLocaleString('es-ES') + "\n"
         });
     }
 

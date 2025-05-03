@@ -1,6 +1,6 @@
 class Solution:
 
-    def __init__(self, graph, best_nodes):
+    def __init__(self, graph, best_nodes, prob_random = None, prob_destruction = None):
         # Graph from networkx
         self.graph = graph
         # Best nodes based on greedy criteria
@@ -13,6 +13,10 @@ class Solution:
         self.best_solution = None
         # Time taken to solve the problem
         self.time_to_solve = None
+        # % to activate node, when random algorithm
+        self.random_node_activation = prob_random
+        # % to destroy solution, when greedy algotithm
+        self.greedy_destruction = prob_destruction
 
     # Lets the solution to transform into json
     def to_dict(self):

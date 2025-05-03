@@ -32,12 +32,12 @@ class Graph_Generator:
         # Return list of nodes
         return list(map(lambda x:x[3],vorax_list))
 
-    def generate_graph(self, num_node, prob_edge, max_dist, min_edge, max_edge):
+    def generate_graph(self, num_node, prob_edge, max_dist, min_edge, max_edge, prob_random = None, prob_destruction = None):
         # Create a graph based on Erdos-Renyi
         g = nx.erdos_renyi_graph(num_node, prob_edge / (num_node - 1))
         g.graph['l_max'] = max_dist
         self.fill_graph_with_data(g, min_edge, max_edge)
-        return Solution(g, self.__get_best_nodes__(g))
+        return Solution(g, self.__get_best_nodes__(g), prob_random, prob_destruction)
 
 
     def fill_graph_with_data(self, graph, min_edge, max_edge):

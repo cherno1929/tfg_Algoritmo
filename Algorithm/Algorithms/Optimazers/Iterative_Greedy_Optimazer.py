@@ -74,5 +74,7 @@ class Iterative_Greedy_Optimazer(Optimizer):
         return sol
 
     def optimize(self, solution):
+        if solution.greedy_destruction != None:
+            self.betta = solution.greedy_destruction
         return self.__iterational_greedy__(solution)
 

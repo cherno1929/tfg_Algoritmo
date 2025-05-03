@@ -22,7 +22,18 @@ class Algorithm_Master:
             data['min_dist'] = int(data['min_dist'])
             data['max_dist'] = int(data['max_dist'])
             data['prob_link'] = float(data['prob_link'])
-        solution = self.graph_generator.generate_graph(data['n_node'], data['prob_link'], data['max_travel'], data['min_dist'], data['max_dist'])
+            if 'ramdom_activation' in data:
+                data['ramdom_activation'] = int(data['ramdom_activation'])
+                data['greedy_destruction'] = None
+            elif 'greedy_destruction' in data:
+                data['greedy_destruction'] = int(data['greedy_destruction'])
+                data['ramdom_activation'] = None
+            else:
+                data['greedy_destruction'] = None
+                data['ramdom_activation'] = None
+        solution = self.graph_generator.generate_graph(data['n_node'], data['prob_link'], data['max_travel'], data['min_dist'], data['max_dist'], data['ramdom_activation'], data['greedy_destruction'])
+        if 'algorithm' not in data:
+            data['algorithm'] = 'g'
 
         return self.run_ftlrp(solution, data['algorithm'][0])
 
@@ -38,7 +49,15 @@ class Algorithm_Master:
         data['jump_node'] = int(data['jump_node'])
         if len(data['algorithm']) == 0:
             data['algorithm'] = 'g'
-
+        if 'ramdom_activation' in data:
+            data['ramdom_activation'] = int(data['ramdom_activation'])
+            data['greedy_destruction'] = None
+        elif 'greedy_destruction' in data:
+            data['greedy_destruction'] = int(data['greedy_destruction'])
+            data['ramdom_activation'] = None
+        else:
+            data['greedy_destruction'] = None
+            data['ramdom_activation'] = None
         statistic = Statistic(data['algorithm'])
 
 

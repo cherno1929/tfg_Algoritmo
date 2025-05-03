@@ -4,9 +4,6 @@ from Routers.Routes import routes
 from Routers.API.AlgorithmAPI import api_algorithm_routes
 from Routers.API.BenchmarkAPI import api_benchmark_routes
 
-# Constrolls ftlrp algorithm
-algorithm_master = Algorithm_Master()
-
 app = flask.Flask(__name__)
 
 # Give routes to server
